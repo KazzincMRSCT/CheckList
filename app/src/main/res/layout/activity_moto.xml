@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingTop="0dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="50dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/exo_2_light"
+            android:text="Введите моточасы"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textColor="@color/colorDarkLight4"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="70dp">
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColorHint="@color/colorDarkLight2">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etDVS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Моточасы ДВС"
+                android:textColor="@color/colorDarkLight4"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:inputType="number"/>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/AnkerSolo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorDarkLight2">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etCompressor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="Моточасы компрессора"
+                android:textColor="@color/colorDarkLight4"
+                android:textSize="20sp"
+                android:inputType="number"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorDarkLight2">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etMaslo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="Моточасы маслостанции"
+                android:textColor="@color/colorDarkLight4"
+                android:textSize="20sp"
+                android:inputType="number"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorDarkLight2">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etPedforator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="Ударочасы перфоратора"
+                android:textColor="@color/colorDarkLight4"
+                android:textSize="20sp"
+                android:inputType="number"/>
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Boomer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColorHint="@color/colorDarkLight2">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etLeftMaslo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="Ударочасы л. маслостанции"
+                android:textColor="@color/colorDarkLight4"
+                android:textSize="20sp"
+                android:inputType="number"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColorHint="@color/colorDarkLight2">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etRightMaslo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="Ударочасы п. маслостанции"
+                android:textColor="@color/colorDarkLight4"
+                android:textSize="20sp"
+                android:inputType="number"/>
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingTop="50dp">
+
+        <Button
+            android:id="@+id/btnOK"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="0dp"
+            android:background="@color/colorDarkLight1"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:hapticFeedbackEnabled="true"
+            android:text="Далее"
+            android:textColor="@color/colorDarkLight3" />
+    </LinearLayout>
+
+</LinearLayout>

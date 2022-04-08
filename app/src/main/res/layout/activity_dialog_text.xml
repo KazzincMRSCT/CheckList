@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DialogText">
+
+
+    <EditText
+        android:id="@+id/dialogEditText"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:minLines="6"
+        android:gravity="top|left"
+        android:maxLines="10"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:scrollbars="vertical"
+        android:textColor="@color/colorDarkLight4"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="5dp"
+        android:hint="Введите текст..."
+        android:textColorHint="@color/colorDarkLight3"
+        android:textSize="14sp"/>
+
+</LinearLayout>

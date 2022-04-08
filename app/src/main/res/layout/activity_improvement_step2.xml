@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorDark"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingTop="0dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="10dp"
+    tools:context=".improvement_step2">
+
+    <TextView
+        android:id="@+id/textViewImproveResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:fontFamily="@font/cuprum"
+        android:text="Ожидаемый результат"
+        android:textColor="@color/colorDarkLight4"
+        android:textSize="20sp"
+        android:layout_marginBottom="5dp"/>
+
+    <EditText
+        android:id="@+id/etImproveResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="fill_horizontal"
+        android:textSize="18sp"
+        android:inputType="textMultiLine"
+        android:hint="Введите ожидаемый результат от реализации и нажмите кнопку 'СОХРАНИТЬ'"
+        android:theme="@style/EditTextHint"
+        android:background="@drawable/edit_text_border"
+        android:padding="10dp"/>
+
+</LinearLayout>

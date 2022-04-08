@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources layout_height="10dp" layout_width="10dp">
+
+    <style name="ListFont" parent="@android:style/Widget.ListView">
+        <item name="android:textColor">#FF0000</item>
+        <item name="android:typeface">sans</item>
+    </style>
+
+</resources>

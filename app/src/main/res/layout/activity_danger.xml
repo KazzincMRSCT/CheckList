@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:padding="10dp"
+tools:context="DangerActivity"
+android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dangerCaption"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:gravity="center"
+        android:textColor="@color/colorDarkLight4"
+        android:textSize="20sp"
+        android:fontFamily="@font/exo_2_light"
+        android:text="Список значительных опасностей и критических средств контроля безопасности"/>
+
+    <EditText
+        android:id="@+id/dangerText"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_weight="2"
+        android:paddingTop="20dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:hint="Опасность"
+        android:textColorHint="@color/colorDarkLight2"
+        android:textColor="@color/colorDarkLight4"
+        android:textSize="18dp"/>
+
+    <EditText
+        android:id="@+id/controlToolsText"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_weight="2"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:hint="Средства контроля"
+        android:textColorHint="@color/colorDarkLight2"
+        android:textColor="@color/colorDarkLight4"
+        android:textSize="18dp"/>
+
+    <EditText
+        android:id="@+id/improvementText"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_weight="2"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:hint="Предложения по улучшению"
+        android:textColorHint="@color/colorDarkLight2"
+        android:textColor="@color/colorDarkLight4"
+        android:textSize="18dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <CheckBox
+            android:id="@+id/cbIsSafety"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Рабочее место безопасно"
+            android:textSize="18dp"
+            android:checked="true"
+            android:textColor="@color/colorDarkLight4" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_nextDanger"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:text="Готово"
+        android:hapticFeedbackEnabled="true"
+        android:textColor="@color/colorDarkLight4"
+        android:theme="@style/AppTheme.Button"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"/>
+
+
+</LinearLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Docs">
+
+    <ScrollView
+        android:id="@+id/scrollCont"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/llCont"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/btn111"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:height="45dp"
+                android:background="@drawable/btn_borders"
+                android:clickable="true"
+                android:drawableRight="@drawable/right16"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="left|center_vertical"
+                android:hapticFeedbackEnabled="true"
+                android:text="Удостоверение по специальности"
+                android:textAllCaps="false"
+                android:textColor="@color/colorDarkLight3"
+                android:theme="@style/AppTheme.Button" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

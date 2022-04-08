@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GSMFragment"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/exo_2_light"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Учёт ГСМ"
+                android:textAlignment="center"
+                android:textColor="@color/colorDarkLight4"
+                android:textSize="24sp" />
+
+            <ImageButton
+                android:id="@+id/btnRefresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:hapticFeedbackEnabled="true"
+                android:src="@drawable/sync32"
+                android:layout_marginLeft="20px"
+                android:background="@color/colorDarkLight"/>
+        </LinearLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/pages_tabs_gsm"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:tabIndicatorColor="@color/blue"
+            app:tabMode="fixed"
+            app:tabGravity="fill">
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ЗАПРАВКА"
+                />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="КОНТРОЛ.ПОКАЗАНИЯ" />
+
+
+        </android.support.design.widget.TabLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="115dp"
+        android:orientation="vertical"
+        android:id="@+id/controlMeasureContainer">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/tvBeginShift"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Начало смены"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorDarkLight3"
+                    android:textSize="14dp"/>
+
+                <EditText
+                    android:id="@+id/etBeginShift"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorDarkLight3"
+                    android:textSize="22dp"
+                    android:textAlignment="center"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/tvEndShift"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Конец смены"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorDarkLight3"
+                    android:textSize="14dp"
+                    />
+
+                <EditText
+                    android:id="@+id/etEndShift"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorDarkLight3"
+                    android:textSize="22dp"
+                    android:textAlignment="center"
+                    />
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/btnSaveControlMeasure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Сохранить"
+            android:layout_gravity="center"
+            android:hapticFeedbackEnabled="true"
+            android:textAllCaps="true"
+            android:textColor="@color/colorDarkLight4"
+            android:theme="@style/AppTheme.Button"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <TextView
+            android:id="@+id/tvControlDiff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:paddingTop="50px"
+            android:textSize="18dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="115dp"
+        android:orientation="vertical"
+        android:id="@+id/gsmMeasureContainer">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0px">
+
+            <LinearLayout
+                android:id="@+id/resultContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</FrameLayout>

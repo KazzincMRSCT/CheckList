@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityForNotification.OnVPNTOReboot">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="15dp"
+                android:text="Внимание!!!"
+                android:textAlignment="center"
+                android:textColor="@color/colorRed"
+                android:textSize="35dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="50dp"
+                android:text="У Вас активно подключение к VPN"
+                android:textAlignment="center"
+                android:textColor="@color/colorRed"
+                android:textSize="35dp" />
+
+            <TextView
+                android:id="@+id/tvVpnOn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:paddingLeft="25dp"
+                android:paddingTop="15dp"
+                android:text="Работа приложений\nЧек-лист и Sipnetic\nвременно приостановлена до перезагрузки смартфона"
+                android:textColor="@color/colorBtnText"
+                android:textSize="22dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="25dp"
+                android:text="Перезагрузите телефон"
+                android:textAlignment="center"
+                android:textColor="@color/colorRed"
+                android:textSize="35dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

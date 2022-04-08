@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/results"
+        android:orderInCategory="1"
+        android:title="Результаты"
+        android:icon="@drawable/monitor_1"
+        app:showAsAction="always"
+        />
+    <item
+        android:id="@+id/addGSM"
+        android:orderInCategory="1"
+        android:title="Новая заправка"
+        android:icon="@drawable/plus_80"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/addRVD"
+        android:orderInCategory="1"
+        android:title="Новая запись"
+        android:icon="@drawable/plus_80"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/addImprovement"
+        android:orderInCategory="1"
+        android:title="Новое предложение"
+        android:icon="@drawable/plus_80"
+        app:showAsAction="always"/>
+
+</menu>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".DialogEventActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvCap1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="Описание:"
+        android:textColor="@color/colorDarkLight3"
+        android:textSize="16sp"
+        android:fontFamily="@font/exo_2_light"
+        android:background="@color/colorDark"/>
+
+    <EditText
+        android:id="@+id/dialogEventText"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:minLines="4"
+        android:gravity="top|left"
+        android:maxLines="10"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:scrollbars="vertical"
+        android:textColor="@color/colorDark"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:hint="Введите текст..."
+        android:textColorHint="@color/colorDarkLight1"
+        android:textSize="16sp"
+        android:background="@color/colorDarkLight3"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/tvCap2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="Ответственный:"
+        android:textColor="@color/colorDarkLight3"
+        android:textSize="16sp"
+        android:fontFamily="@font/exo_2_light"
+        android:background="@color/colorDark"
+        />
+
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/employee_spinner"
+        app:hintText="Выберите..."
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textColor="@color/colorDarkLight4"
+        android:theme="@style/MyAlertDialogThemeSpinner"
+        android:background="@color/colorDarkLight3"
+        >
+
+    </com.toptoche.searchablespinnerlibrary.SearchableSpinner>
+
+    <TextView
+        android:id="@+id/tvCap3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="Срок выполнения:"
+        android:textColor="@color/colorDarkLight3"
+        android:textSize="16sp"
+        android:fontFamily="@font/exo_2_light"
+        android:background="@color/colorDark"
+        />
+
+    <DatePicker android:id="@+id/dateSrok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"
+        android:theme="@style/MyAlertDialogThemeDatePicker"
+        android:paddingLeft="20dp"
+        android:layout_gravity="center"
+        />
+
+    <CheckBox
+        android:id="@+id/checkBoxReg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:button="@null"
+        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+        android:text="Зарегистрировать в ИС УО"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="@color/colorDarkLight3"
+        android:textSize="16sp"
+        android:fontFamily="@font/exo_2_light"
+        android:background="@color/colorDark"/>
+
+
+</LinearLayout>

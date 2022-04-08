@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".KeyActivity">
+
+    <TextView
+        android:id="@+id/tvKeyCaption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/exo_2_light"
+        android:text="Пароль ЭЦП"
+        android:textAlignment="center"
+        android:textColor="@color/colorDarkLight4"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <EditText
+            android:id="@+id/etKeyPassword"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:textAlignment="center"
+            android:textColor="@color/colorDarkLight3"
+            android:paddingTop="10dp"/>
+
+        <ImageView
+            android:id="@+id/ivShowPswd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:src="@drawable/viewpswd"
+            android:paddingLeft="5dp"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSaveKeyPassword"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:textColor="@color/colorDarkLight3"
+        android:background="@color/colorDarkLight1"
+        android:text="Сохранить" />
+
+    <Button
+        android:id="@+id/btnChekKey"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"
+        android:textColor="@color/colorDarkLight3"
+        android:background="@color/colorDarkLight1"
+        android:text="Проверить ключ" />
+
+    <TextView
+        android:id="@+id/tvKeyInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/exo_2_light"
+        android:textAlignment="center"
+        android:textColor="@color/colorDarkLight4"
+        android:textSize="16dp" />
+</LinearLayout>

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/colorDark"
+android:orientation="vertical"
+android:paddingLeft="5dp"
+android:paddingTop="0dp"
+android:paddingRight="5dp"
+android:paddingBottom="5dp"
+tools:context=".GSMReffil">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/pages_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:tabIndicatorColor="@color/blue"
+        app:tabMode="fixed"
+        app:tabGravity="fill">
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ДТ"
+            />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Масло" />
+
+
+    </android.support.design.widget.TabLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/spinner_border"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spReasonDT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="0dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/spReasonOil"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="0dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center"
+            android:src="@drawable/drop" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/tvDT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="0dp"
+        android:text="Дт"
+        android:textSize="20sp"
+        android:textColor="@color/colorDarkLight3"/>
+
+    <EditText
+        android:id="@+id/etDT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="15"
+        android:inputType="number"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColorHint="@color/colorDarkLight3"/>
+
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/etDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="54dp"
+        android:layout_weight="100"
+        android:layout_marginTop="-15dp"
+        android:hint="Причина не указана"
+        android:textColorHint="@color/colorRed"
+        android:textSize="14dp" />
+
+    <Button
+        android:id="@+id/btnAvrReasonEdit"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:drawableLeft="@android:drawable/ic_menu_edit"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:hapticFeedbackEnabled="true"
+        android:textAllCaps="false"
+        android:textColor="@color/colorDarkLight4"
+        android:theme="@style/AppTheme.Button" />
+
+</LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <TextView
+        android:id="@+id/tvSAE15W40"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="0dp"
+        android:text="SAE 15W40"
+        android:textSize="20sp"
+        android:textColor="@color/colorDarkLight3"/>
+
+    <EditText
+        android:id="@+id/etSAE15W40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="15"
+        android:inputType="number"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColorHint="@color/colorDarkLight3"/>
+
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tvSAE50"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="0dp"
+        android:text="SAE 50"
+        android:textSize="20sp"
+        android:textColor="@color/colorDarkLight3"/>
+
+    <EditText
+        android:id="@+id/etSAE50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="15"
+        android:inputType="number"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColorHint="@color/colorDarkLight3"/>
+
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tvSAE10W40"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="0dp"
+        android:text="SAE 10W40"
+        android:textSize="20sp"
+        android:textColor="@color/colorDarkLight3"/>
+
+    <EditText
+        android:id="@+id/etSAE10W40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="15"
+        android:inputType="number"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColorHint="@color/colorDarkLight3"/>
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv46"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="0dp"
+        android:text="T-46"
+        android:textSize="20sp"
+        android:textColor="@color/colorDarkLight3"/>
+
+    <EditText
+        android:id="@+id/et46"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="15"
+        android:inputType="number"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColorHint="@color/colorDarkLight3" />
+
+</LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/tv86"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="0dp"
+            android:text="T-86"
+            android:textSize="20sp"
+            android:textColor="@color/colorDarkLight3"/>
+
+        <EditText
+            android:id="@+id/et86"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="15"
+            android:inputType="number"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColorHint="@color/colorDarkLight3" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

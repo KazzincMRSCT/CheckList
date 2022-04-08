@@ -1,0 +1,15 @@
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?android:colorControlHighlight">
+    <item>
+        <selector>
+            <item
+                android:drawable="@color/colorDarkLight1"
+                android:color="@color/colorDarkLight1"
+                android:state_checked="true" />
+            <item
+                android:drawable="@color/colorPrimaryDark"
+                android:color="@color/colorDarkLight2"
+                android:state_checked="false" />
+        </selector>
+    </item>
+</ripple>

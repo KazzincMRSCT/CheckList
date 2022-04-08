@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".DialogCheckboxActivity"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/colorDarkLight3">
+
+        <Spinner
+            android:id="@+id/spinner_alert_dialog"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:minHeight="0dp"
+            android:textSize="24sp"
+            android:theme="@style/MyAlertDialogThemeSpinner"
+            android:paddingTop="7dp"
+            android:spinnerMode="dropdown"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingTop="13dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/menu_dd_16"
+            />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listview_alert_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/colorDarkLight1"
+        android:dividerHeight="1dp"
+        android:paddingTop="10dp"/>
+
+
+</LinearLayout>

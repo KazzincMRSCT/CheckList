@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/task"
+        android:icon="@drawable/briefcase"
+        android:title="Наряд"
+        app:showAsAction="ifRoom|withText"/>
+
+    <item
+        android:id="@+id/checkList"
+        android:icon="@drawable/check1"
+        android:title="Чек-лист"
+        app:showAsAction="ifRoom|withText"/>
+
+    <item
+        android:id="@+id/gsm"
+        android:icon="@drawable/fuel_pump_1"
+        android:title="ГСМ"
+        app:showAsAction="ifRoom|withText"/>
+
+    <item
+        android:id="@+id/rvd"
+        android:icon="@drawable/water_hose"
+        android:title="РВД"
+        app:showAsAction="ifRoom|withText"/>
+</menu>

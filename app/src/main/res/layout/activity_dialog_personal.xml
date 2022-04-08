@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:padding="10dp"
+tools:context=".DialogPersonalActivity"
+android:orientation="vertical">
+
+
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/area_list_spinner"
+        app:hintText="Выберите..."
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textColor="@color/colorDarkLight4"
+        android:theme="@style/MyAlertDialogThemeSpinner"
+        android:background="@color/colorDarkLight3"
+        >
+
+    </com.toptoche.searchablespinnerlibrary.SearchableSpinner>
+
+
+</LinearLayout>
