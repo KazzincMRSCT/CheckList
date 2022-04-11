@@ -640,7 +640,7 @@ public class SyncService extends Service {
                 //Ключ для открытия активити по таймеру
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                //
+
 
             }else {
                 if(Integer.parseInt(String.valueOf(getVpnConnection(getApplicationContext(),0)))<SystemClock.elapsedRealtime() && Integer.parseInt(getVpnConnection(getApplicationContext(),1))==1){
