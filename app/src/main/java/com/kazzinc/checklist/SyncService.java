@@ -307,137 +307,137 @@ public class SyncService extends Service {
             Log.d("Alexey", "getNitification step 5");
 
             if(msSqlDatabase.checkConnection()) {//Передача данных по GSM на сервер
-               try{
-                   sqlLiteDatabase.open(getApplicationContext());
+                try{
+                    sqlLiteDatabase.open(getApplicationContext());
 
-                   Log.d("Alexey", "GSM начало передачи");
+                    Log.d("Alexey", "GSM начало передачи");
 
-                   String selectQuery = "SELECT DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, IFNULL(ReasonOil,'') as ReasonOil, Confirmed, T86 FROM GSM WHERE SendToServer=0";
-                   Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
-                   Log.d("Alexey", "GSM Send -1");
+                    String selectQuery = "SELECT DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, IFNULL(ReasonOil,'') as ReasonOil, Confirmed, T86 FROM GSM WHERE SendToServer=0";
+                    Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
+                    Log.d("Alexey", "GSM Send -1");
 
-                   if (cursor.moveToFirst()) {
-                       do {
-                           Log.d("Alexey", "GSM Send 0");
-                           String DateEvent = cursor.getString(0);
-                           String Date = cursor.getString(1);
-                           Integer Shift = Integer.parseInt(cursor.getString(2));
-                           String EquipOut = cursor.getString(3);
-                           String EquipIn = cursor.getString(4);
-                           String EmplOut = cursor.getString(5);
-                           String Reason = cursor.getString(6);
-                           double DT = Double.parseDouble(cursor.getString(7));
-                           double SAE15W40 = Double.parseDouble(cursor.getString(8));
-                           double SAE50 = Double.parseDouble(cursor.getString(9));
-                           double SAE10W40 = Double.parseDouble(cursor.getString(10));
-                           double T46 = Double.parseDouble(cursor.getString(11));
-                           double T86 = Double.parseDouble(cursor.getString(15));
-                           int Deleted = Integer.parseInt(cursor.getString(12));
-                           String ReasonOil = cursor.getString(13);
-                           int Confirmed = Integer.parseInt(cursor.getString(14));
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Log.d("Alexey", "GSM Send 0");
+                            String DateEvent = cursor.getString(0);
+                            String Date = cursor.getString(1);
+                            Integer Shift = Integer.parseInt(cursor.getString(2));
+                            String EquipOut = cursor.getString(3);
+                            String EquipIn = cursor.getString(4);
+                            String EmplOut = cursor.getString(5);
+                            String Reason = cursor.getString(6);
+                            double DT = Double.parseDouble(cursor.getString(7));
+                            double SAE15W40 = Double.parseDouble(cursor.getString(8));
+                            double SAE50 = Double.parseDouble(cursor.getString(9));
+                            double SAE10W40 = Double.parseDouble(cursor.getString(10));
+                            double T46 = Double.parseDouble(cursor.getString(11));
+                            double T86 = Double.parseDouble(cursor.getString(15));
+                            int Deleted = Integer.parseInt(cursor.getString(12));
+                            String ReasonOil = cursor.getString(13);
+                            int Confirmed = Integer.parseInt(cursor.getString(14));
 
-                           boolean result=false;
+                            boolean result=false;
 
-                           Log.d("Alexey", "GSM result send " + DateEvent + ", " + Date + ", " + Shift+ ", " + EquipOut+ ", " + EquipIn+ ", " + EmplOut+ ", " + Reason+ ", " + DT+ ", " + SAE15W40+ ", " + SAE50+ ", " + SAE10W40+ ", " + T46+ ", " + Deleted + T46+ ", " + ReasonOil);
+                            Log.d("Alexey", "GSM result send " + DateEvent + ", " + Date + ", " + Shift+ ", " + EquipOut+ ", " + EquipIn+ ", " + EmplOut+ ", " + Reason+ ", " + DT+ ", " + SAE15W40+ ", " + SAE50+ ", " + SAE10W40+ ", " + T46+ ", " + Deleted + T46+ ", " + ReasonOil);
 
-                           result = msSqlDatabase.UpdateGSM(DateEvent,Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, ReasonOil, Confirmed, T86);
+                            result = msSqlDatabase.UpdateGSM(DateEvent,Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, ReasonOil, Confirmed, T86);
 
-                           Log.d("Alexey", "GSM Send 9 " + result);
+                            Log.d("Alexey", "GSM Send 9 " + result);
 
-                           if (result) {
-                               Log.d("Alexey", "GSM Send 10");
-                               sqlLiteDatabase.open(getApplicationContext());
-                               String updateQuery = "UPDATE GSM SET SendToServer=1 WHERE DateEvent='" + DateEvent + "'";
-                               sqlLiteDatabase.database.execSQL(updateQuery);
-                               sqlLiteDatabase.close();
-                           }
+                            if (result) {
+                                Log.d("Alexey", "GSM Send 10");
+                                sqlLiteDatabase.open(getApplicationContext());
+                                String updateQuery = "UPDATE GSM SET SendToServer=1 WHERE DateEvent='" + DateEvent + "'";
+                                sqlLiteDatabase.database.execSQL(updateQuery);
+                                sqlLiteDatabase.close();
+                            }
 
-                       } while (cursor.moveToNext());
-                   }
-               } catch (SQLException | NumberFormatException e) {
+                        } while (cursor.moveToNext());
+                    }
+                } catch (SQLException | NumberFormatException e) {
 
-               }
+                }
             }
 
             Log.d("Alexey", "getNitification step 6");
 
             if(msSqlDatabase.checkConnection()) {//Передача данных по чек-листам на сервер
-               try{
-                   sqlLiteDatabase.open(getApplicationContext());
+                try{
+                    sqlLiteDatabase.open(getApplicationContext());
 
-                   String selectQuery = "SELECT * FROM Answer WHERE IsSendToServer ISNULL OR IsSendToServer<>1";
-                   Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
+                    String selectQuery = "SELECT * FROM Answer WHERE IsSendToServer ISNULL OR IsSendToServer<>1";
+                    Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
 
-                   if (cursor.moveToFirst()) {
-                       do {
-                           int AnswerId = Integer.parseInt(cursor.getString(0));
-                           Log.d("Alexey", "Чек-лист " + AnswerId);
-                           int AnswerUserId = Integer.parseInt(cursor.getString(1));
-                           int AnswerQuesId = Integer.parseInt(cursor.getString(2));
-                           String AnswerText = cursor.getString(3);
-                           String AnswerDate = cursor.getString(4);
-                           int AnswerShift = Integer.parseInt(cursor.getString(5));
-                           String AnswerComment = cursor.getString(6);
-                           String AnswerWorkPlaceName = cursor.getString(7);
-                           String AnswerDateTime = cursor.getString(8);
-                           String AnswerPhotos = cursor.getString(9);
-                           msSqlDatabase.updateAnswer(AnswerUserId,AnswerQuesId,AnswerText,AnswerDate,AnswerShift,AnswerComment, AnswerWorkPlaceName, AnswerDateTime, AnswerPhotos);
+                    if (cursor.moveToFirst()) {
+                        do {
+                            int AnswerId = Integer.parseInt(cursor.getString(0));
+                            Log.d("Alexey", "Чек-лист " + AnswerId);
+                            int AnswerUserId = Integer.parseInt(cursor.getString(1));
+                            int AnswerQuesId = Integer.parseInt(cursor.getString(2));
+                            String AnswerText = cursor.getString(3);
+                            String AnswerDate = cursor.getString(4);
+                            int AnswerShift = Integer.parseInt(cursor.getString(5));
+                            String AnswerComment = cursor.getString(6);
+                            String AnswerWorkPlaceName = cursor.getString(7);
+                            String AnswerDateTime = cursor.getString(8);
+                            String AnswerPhotos = cursor.getString(9);
+                            msSqlDatabase.updateAnswer(AnswerUserId,AnswerQuesId,AnswerText,AnswerDate,AnswerShift,AnswerComment, AnswerWorkPlaceName, AnswerDateTime, AnswerPhotos);
 
-                           try {
-                               sqlLiteDatabase.open(getApplicationContext());
-                               String updateQuery = "UPDATE Answer SET IsSendToServer=1 WHERE AnswerId='" + AnswerId + "'";
-                               sqlLiteDatabase.database.execSQL(updateQuery);
-                               sqlLiteDatabase.close();
-                           }
-                           catch (Exception e)
-                           {
-                               Log.d("Alexey", "Ошибка: " + e.getMessage());
-                           }
+                            try {
+                                sqlLiteDatabase.open(getApplicationContext());
+                                String updateQuery = "UPDATE Answer SET IsSendToServer=1 WHERE AnswerId='" + AnswerId + "'";
+                                sqlLiteDatabase.database.execSQL(updateQuery);
+                                sqlLiteDatabase.close();
+                            }
+                            catch (Exception e)
+                            {
+                                Log.d("Alexey", "Ошибка: " + e.getMessage());
+                            }
 
-                       } while (cursor.moveToNext());
-                   }
-                   sendPhotoToServer();
-               } catch (SQLException | NumberFormatException e) {
+                        } while (cursor.moveToNext());
+                    }
+                    sendPhotoToServer();
+                } catch (SQLException | NumberFormatException e) {
 
-               }
+                }
             }
 
             if(msSqlDatabase.checkConnection()) {//Передача данных по РВД на сервер
-               try {
-                   sqlLiteDatabase.open(getApplicationContext());
+                try {
+                    sqlLiteDatabase.open(getApplicationContext());
 
-                   String selectQuery = "SELECT DateEvent, Date, Shift, Equipment, OldNumber, NewNumber, MotoHours, SpecialHours, Place, Reason, Deleted FROM RVD WHERE SendToServer=0";
-                   Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
+                    String selectQuery = "SELECT DateEvent, Date, Shift, Equipment, OldNumber, NewNumber, MotoHours, SpecialHours, Place, Reason, Deleted FROM RVD WHERE SendToServer=0";
+                    Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
 
-                   //Обновляем мнформацию по РВД
-                   if (cursor.moveToFirst()) {
-                       do {
-                           String DateEvent = cursor.getString(0);
-                           String Date = cursor.getString(1);
-                           Integer Shift = Integer.parseInt(cursor.getString(2));
-                           String Equipment = cursor.getString(3);
-                           int OldNumber = Integer.parseInt(cursor.getString(4));
-                           int NewNumber = Integer.parseInt(cursor.getString(5));
-                           int MotoHours = Integer.parseInt(cursor.getString(6));
-                           int SpecialHours = Integer.parseInt(cursor.getString(7));
-                           String Place = cursor.getString(8);
-                           String Reason = cursor.getString(9);
-                           int Deleted = Integer.parseInt(cursor.getString(10));
+                    //Обновляем мнформацию по РВД
+                    if (cursor.moveToFirst()) {
+                        do {
+                            String DateEvent = cursor.getString(0);
+                            String Date = cursor.getString(1);
+                            Integer Shift = Integer.parseInt(cursor.getString(2));
+                            String Equipment = cursor.getString(3);
+                            int OldNumber = Integer.parseInt(cursor.getString(4));
+                            int NewNumber = Integer.parseInt(cursor.getString(5));
+                            int MotoHours = Integer.parseInt(cursor.getString(6));
+                            int SpecialHours = Integer.parseInt(cursor.getString(7));
+                            String Place = cursor.getString(8);
+                            String Reason = cursor.getString(9);
+                            int Deleted = Integer.parseInt(cursor.getString(10));
 
-                           boolean result=false;
+                            boolean result=false;
 
-                           result = msSqlDatabase.UpdateRVD(DateEvent, Date, Shift, Equipment, OldNumber, NewNumber, MotoHours, SpecialHours, Place, Reason, Deleted);
-                           if (result) {
-                               sqlLiteDatabase.open(getApplicationContext());
-                               String updateQuery = "UPDATE RVD SET SendToServer=1 WHERE DateEvent='" + DateEvent + "'";
-                               sqlLiteDatabase.database.execSQL(updateQuery);
-                               sqlLiteDatabase.close();
-                           }
+                            result = msSqlDatabase.UpdateRVD(DateEvent, Date, Shift, Equipment, OldNumber, NewNumber, MotoHours, SpecialHours, Place, Reason, Deleted);
+                            if (result) {
+                                sqlLiteDatabase.open(getApplicationContext());
+                                String updateQuery = "UPDATE RVD SET SendToServer=1 WHERE DateEvent='" + DateEvent + "'";
+                                sqlLiteDatabase.database.execSQL(updateQuery);
+                                sqlLiteDatabase.close();
+                            }
 
-                       } while (cursor.moveToNext());
-                   }
-               } catch (SQLException | NumberFormatException e) {
-               }
+                        } while (cursor.moveToNext());
+                    }
+                } catch (SQLException | NumberFormatException e) {
+                }
             }
 
             String eq = loadGsmEq();
@@ -446,13 +446,19 @@ public class SyncService extends Service {
 
             if(msSqlDatabase.checkConnection()) {//Загрузк данных по ГСМ с сервера
 
-                if (eq.length()>0) {
-                    List<com.kazzinc.checklist.Model.GSM> gsm = msSqlDatabase.getGSM(eq);
-                    sqlLiteDatabase.open(getApplicationContext());
-                    sqlLiteDatabase.updateGSM(gsm,eq);
-                }
+                try{
+                    if (eq.length()>0) {
+                        List<com.kazzinc.checklist.Model.GSM> gsm = msSqlDatabase.getGSM(eq);
+                        sqlLiteDatabase.open(getApplicationContext());
+                        sqlLiteDatabase.updateGSM(gsm,eq);
+                    }
 
-                sqlLiteDatabase.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                finally {
+                    sqlLiteDatabase.close();
+                }
 
             }
 
@@ -475,81 +481,81 @@ public class SyncService extends Service {
             }
             sqlLiteDatabase.close();
 
-//            SharedPreferences sPref = getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
-//            sPref.getInt("Notify",1);
+            SharedPreferences sPref = getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
+            sPref.getInt("Notify",1);
 
-//            if ((countNotify>0)&&(!eq.equals("Заправщик"))) {
-//                try {
-//                    Log.d("Alexey", "1Notif1 Определяем уведомление");
-//
-//                    Intent notificationIntent = new Intent(getApplicationContext(), MenuActivity.class);
-//                    notificationIntent.putExtra("inputPage", "gsm");
-//                    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
-//                            0, notificationIntent, 0);
-//
-//                /*Spannable sb = new SpannableString("Bold text");
-//                sb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);*/
-//
-//                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//                        Notification.Builder notificationBuilder =
-//                                new Notification.Builder(getApplicationContext(), CHANNEL1_ID)
-//                                        .setDefaults(Notification.DEFAULT_ALL)
-//                                        .setSmallIcon(R.drawable.notification)
-//                                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.gas_station10))
-//                                        .setContentTitle(Html.fromHtml(String.format(Locale.getDefault(), "<strong><h1>%s</h1></strong>", "Учёт ГСМ")))
-//                                        .setContentText(Html.fromHtml(String.format(Locale.getDefault(), "<font size=\"18\">%s</font>", "Подтвердите заправку ГСМ")))
-//                                        .setAutoCancel(true)
-//                                        .setColor(Color.RED)
-//                                        .setPriority(Notification.PRIORITY_MAX)
-//                                        /*.setStyle(new Notification.InboxStyle()
-//                                                .addLine("Строка 1")
-//                                                .addLine(sb)
-//                                                .setSummaryText("+3 more"))*/
-//                                        //.setPriority(1)// this is deprecated in API 26 but you can still use for below 26. check below update for 26 API
-//                                        //.setSound(defaultSoundUri)
-//                                        .setContentIntent(pendingIntent);
-//
-//                        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL1_ID, "Уведомления по ГСМ", NotificationManager.IMPORTANCE_HIGH);
-//                        // Configure the notification channel.
-//                        AudioAttributes att = new AudioAttributes.Builder()
-//                                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-//                                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-//                                .build();
-//                        notificationChannel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI, att);
-//                        notificationChannel.setDescription("");
-//                        notificationChannel.enableLights(true);
-//                        notificationChannel.setLightColor(Color.RED);
-//                        notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
-//                        notificationChannel.enableVibration(true);
-//
-//                        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-//                        notificationManager.createNotificationChannel(notificationChannel);
-//
-//                        notificationManager.notify(0, notificationBuilder.build());
-//
-//                    } else {
-//                        NotificationCompat.Builder notificationBuilder =
-//                                new NotificationCompat.Builder(getApplicationContext())
-//                                        .setSmallIcon(R.mipmap.ic_launcher)
-//                                        .setContentTitle("Учет ГСМ")
-//                                        .setContentText("Требуется подтверждение информации по ГСМ")
-//                                        .setAutoCancel(true)
-//                                        .setPriority(Notification.PRIORITY_MAX) // this is deprecated in API 26 but you can still use for below 26. check below update for 26 API
-//                                        .setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
-//                        //.setContentIntent(pendingIntent);
-//                        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-//                        notificationManager.notify(0, notificationBuilder.build());
-//                    }
-//
-//                    //startForeground(111, notification);
-//
-//                    Log.d("Alexey", "1Notif1 Показываем уведомление");
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    Log.d("Alexey", "1Notif1: ошибка " + e.getMessage());
-//                    Log.d("Alexey", "1Notif1: ошибка " + e.getStackTrace());
-//                }
-//            }
+            if ((countNotify>0)&&(!eq.equals("Заправщик"))) {
+                try {
+                    Log.d("Alexey", "1Notif1 Определяем уведомление");
+
+                    Intent notificationIntent = new Intent(getApplicationContext(), MenuActivity.class);
+                    notificationIntent.putExtra("inputPage", "gsm");
+                    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                            0, notificationIntent, 0);
+
+                /*Spannable sb = new SpannableString("Bold text");
+                sb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);*/
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        Notification.Builder notificationBuilder =
+                                new Notification.Builder(getApplicationContext(), CHANNEL1_ID)
+                                        .setDefaults(Notification.DEFAULT_ALL)
+                                        .setSmallIcon(R.drawable.notification)
+                                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.gas_station10))
+                                        .setContentTitle(Html.fromHtml(String.format(Locale.getDefault(), "<strong><h1>%s</h1></strong>", "Учёт ГСМ")))
+                                        .setContentText(Html.fromHtml(String.format(Locale.getDefault(), "<font size=\"18\">%s</font>", "Подтвердите заправку ГСМ")))
+                                        .setAutoCancel(true)
+                                        .setColor(Color.RED)
+                                        .setPriority(Notification.PRIORITY_MAX)
+                                        /*.setStyle(new Notification.InboxStyle()
+                                                .addLine("Строка 1")
+                                                .addLine(sb)
+                                                .setSummaryText("+3 more"))*/
+                                        //.setPriority(1)// this is deprecated in API 26 but you can still use for below 26. check below update for 26 API
+                                        //.setSound(defaultSoundUri)
+                                        .setContentIntent(pendingIntent);
+
+                        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL1_ID, "Уведомления по ГСМ", NotificationManager.IMPORTANCE_HIGH);
+                        // Configure the notification channel.
+                        AudioAttributes att = new AudioAttributes.Builder()
+                                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                                .build();
+                        notificationChannel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI, att);
+                        notificationChannel.setDescription("");
+                        notificationChannel.enableLights(true);
+                        notificationChannel.setLightColor(Color.RED);
+                        notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+                        notificationChannel.enableVibration(true);
+
+                        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                        notificationManager.createNotificationChannel(notificationChannel);
+
+                        notificationManager.notify(0, notificationBuilder.build());
+
+                    } else {
+                        NotificationCompat.Builder notificationBuilder =
+                                new NotificationCompat.Builder(getApplicationContext())
+                                        .setSmallIcon(R.mipmap.ic_launcher)
+                                        .setContentTitle("Учет ГСМ")
+                                        .setContentText("Требуется подтверждение информации по ГСМ")
+                                        .setAutoCancel(true)
+                                        .setPriority(Notification.PRIORITY_MAX) // this is deprecated in API 26 but you can still use for below 26. check below update for 26 API
+                                        .setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+                        //.setContentIntent(pendingIntent);
+                        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                        notificationManager.notify(0, notificationBuilder.build());
+                    }
+
+                    //startForeground(111, notification);
+
+                    Log.d("Alexey", "1Notif1 Показываем уведомление");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d("Alexey", "1Notif1: ошибка " + e.getMessage());
+                    Log.d("Alexey", "1Notif1: ошибка " + e.getStackTrace());
+                }
+            }
 
             return true;
         }
@@ -587,42 +593,54 @@ public class SyncService extends Service {
     };
 
     protected String getVpnConnection(Context context, int i){
-        sqlLiteDatabase.open(context);
+        try {
+            sqlLiteDatabase.open(context);
 
-        String selectQuery = "SELECT * FROM VpnConnection WHERE Id=1";
-        Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
+            String selectQuery = "SELECT * FROM VpnConnection WHERE Id=1";
+            Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
 
-        if(i==0) {
+            if(i==0) {
 
-            if (cursor.moveToFirst()) {
-                do {
-                    return cursor.getString(1);
-                } while (cursor.moveToNext());
+                if (cursor.moveToFirst()) {
+                    do {
+                        return cursor.getString(1);
+                    } while (cursor.moveToNext());
+                }
+            }else if(i==1){
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        return cursor.getString(2);
+                    } while (cursor.moveToNext());
+                }
             }
-        }else if(i==1){
+        } catch (SQLException e) {
 
-            if (cursor.moveToFirst()) {
-                do {
-                    return cursor.getString(2);
-                } while (cursor.moveToNext());
-            }
         }
         return "";
     }
 
     private void setVpnConnection(){
-        sqlLiteDatabase.open(getApplicationContext());
-        Long longn = SystemClock.elapsedRealtime();
-        String updateQuery = "UPDATE VpnConnection SET TimeWorkPhone = "+longn+" WHERE Id = 1";
-        sqlLiteDatabase.database.execSQL(updateQuery);
+        try {
+            sqlLiteDatabase.open(getApplicationContext());
+            Long longn = SystemClock.elapsedRealtime();
+            String updateQuery = "UPDATE VpnConnection SET TimeWorkPhone = "+longn+" WHERE Id = 1";
+            sqlLiteDatabase.database.execSQL(updateQuery);
+        } catch (SQLException e) {
+
+        }
     }
 
 
     protected void setVpnConnection(Context context, int i){
-        sqlLiteDatabase.open(context);
-        Long longn = SystemClock.elapsedRealtime();
-        String updateQuery = "UPDATE VpnConnection SET OnVpn="+i+", TimeWorkPhone = "+longn+" WHERE Id = 1";
-        sqlLiteDatabase.database.execSQL(updateQuery);
+        try{
+            sqlLiteDatabase.open(context);
+            Long longn = SystemClock.elapsedRealtime();
+            String updateQuery = "UPDATE VpnConnection SET OnVpn="+i+", TimeWorkPhone = "+longn+" WHERE Id = 1";
+            sqlLiteDatabase.database.execSQL(updateQuery);
+        } catch (SQLException e) {
+
+        }
     }
 
 
@@ -632,31 +650,35 @@ public class SyncService extends Service {
         @Override public void run()
         {
 
-            if(new LoginActivity().vpnActive(getApplicationContext()) && activityCode!=1){
+            try {
+                if(new LoginActivity().vpnActive(getApplicationContext()) && activityCode!=1){
 //                new OnVPNBeforeReboot().setTextOnVpn("У вас включен VPN для того что бы пользоваться прилочением Чек-лист и Sipnetic пожалуйста перезагрузите телефон");
-                activityCode=1;
-                setVpnConnection(getApplicationContext(),1);
-                Intent intent = new Intent(getApplicationContext(), OnVPNTOReboot.class);
-                //Ключ для открытия активити по таймеру
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                    activityCode=1;
+                    setVpnConnection(getApplicationContext(),1);
+                    Intent intent = new Intent(getApplicationContext(), OnVPNTOReboot.class);
+                    //Ключ для открытия активити по таймеру
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
 
-            }else {
-                if(Integer.parseInt(String.valueOf(getVpnConnection(getApplicationContext(),0)))<SystemClock.elapsedRealtime() && Integer.parseInt(getVpnConnection(getApplicationContext(),1))==1){
-                    if(activityCode!=1) {
-                        setVpnConnection(getApplicationContext(),1);
-                        Intent intent = new Intent(getApplicationContext(), OnVPNTOReboot.class);
-                        //Ключ для открытия активити по таймеру
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    }
                 }else {
-                    setVpnConnection(getApplicationContext(),0);
-                    activityCode=0;
+                    if(Integer.parseInt(String.valueOf(getVpnConnection(getApplicationContext(),0)))<SystemClock.elapsedRealtime() && Integer.parseInt(getVpnConnection(getApplicationContext(),1))==1){
+                        if(activityCode!=1) {
+                            setVpnConnection(getApplicationContext(),1);
+                            Intent intent = new Intent(getApplicationContext(), OnVPNTOReboot.class);
+                            //Ключ для открытия активити по таймеру
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    }else {
+                        setVpnConnection(getApplicationContext(),0);
+                        activityCode=0;
+                    }
                 }
-            }
 
-            setVpnConnection();
+                setVpnConnection();
+            } catch (NumberFormatException e) {
+
+            }
 
             try {
                 Log.d("Alexey", "SyncService timerCheckModify");
@@ -773,7 +795,6 @@ public class SyncService extends Service {
                         //sqlLiteDatabase.close();
                     }
                     catch (Exception e) {
-                        e.printStackTrace();
                         Log.d("Alexey", "ECP: 11 ошибка выполнения процедуры на сервер сервер старт 2" + e.getMessage());
                     }
 
@@ -806,96 +827,104 @@ public class SyncService extends Service {
                 }
 
                 if ((loadNeedLoadParam()==3) || (loadNeedLoadParam()==4)) { //1 - чек-лист; 2 - наряд; 3 - моточасы; 4 - все;  5 - ПНВР; 6 - чек-лист опасности и средства контроля
-                    Log.d("Alexey","Мото проверка ");
-                    sqlLiteDatabase.open(getApplicationContext());
-                    String motoQuery = "SELECT MotoEquipName, MotoDate, MotoShift, CASE WHEN MotoDVS='' THEN 0 ELSE MotoDVS END as MotoDVS, CASE WHEN MotoCompress='' THEN 0 ELSE MotoCompress END as MotoCompress, CASE WHEN MotoPerfor='' THEN 0 ELSE MotoPerfor END as MotoPerfor, CASE WHEN MotoMaslo='' THEN 0 ELSE MotoMaslo END as MotoMaslo, CASE WHEN MotoLeft='' THEN 0 ELSE MotoLeft END as MotoLeft, CASE WHEN MotoRight='' THEN 0 ELSE MotoRight END as MotoRight FROM Moto";
-                    Cursor cursorMoto = sqlLiteDatabase.database.rawQuery(motoQuery, null);
+                    try {
+                        Log.d("Alexey","Мото проверка ");
+                        sqlLiteDatabase.open(getApplicationContext());
+                        String motoQuery = "SELECT MotoEquipName, MotoDate, MotoShift, CASE WHEN MotoDVS='' THEN 0 ELSE MotoDVS END as MotoDVS, CASE WHEN MotoCompress='' THEN 0 ELSE MotoCompress END as MotoCompress, CASE WHEN MotoPerfor='' THEN 0 ELSE MotoPerfor END as MotoPerfor, CASE WHEN MotoMaslo='' THEN 0 ELSE MotoMaslo END as MotoMaslo, CASE WHEN MotoLeft='' THEN 0 ELSE MotoLeft END as MotoLeft, CASE WHEN MotoRight='' THEN 0 ELSE MotoRight END as MotoRight FROM Moto";
+                        Cursor cursorMoto = sqlLiteDatabase.database.rawQuery(motoQuery, null);
 
-                    //Обновляем мнформацию по моточасам
-                    if (cursorMoto.moveToFirst()) {
-                        do {
-                            String MotoEquipName = cursorMoto.getString(0);
-                            String MotoDate = cursorMoto.getString(1);
-                            int MotoShift = Integer.parseInt(cursorMoto.getString(2));
-                            float MotoDVS = Float.parseFloat(cursorMoto.getString(3));
-                            float MotoCompress = Float.parseFloat(cursorMoto.getString(4));
-                            float MotoPerfor = Float.parseFloat(cursorMoto.getString(5));
-                            float MotoMaslo = Float.parseFloat(cursorMoto.getString(6));
-                            float MotoLeft = Float.parseFloat(cursorMoto.getString(7));
-                            float MotoRight = Float.parseFloat(cursorMoto.getString(8));
+                        if (cursorMoto.moveToFirst()) {
+                            do {
+                                String MotoEquipName = cursorMoto.getString(0);
+                                String MotoDate = cursorMoto.getString(1);
+                                int MotoShift = Integer.parseInt(cursorMoto.getString(2));
+                                float MotoDVS = Float.parseFloat(cursorMoto.getString(3));
+                                float MotoCompress = Float.parseFloat(cursorMoto.getString(4));
+                                float MotoPerfor = Float.parseFloat(cursorMoto.getString(5));
+                                float MotoMaslo = Float.parseFloat(cursorMoto.getString(6));
+                                float MotoLeft = Float.parseFloat(cursorMoto.getString(7));
+                                float MotoRight = Float.parseFloat(cursorMoto.getString(8));
 
-                            Log.d("Alexey", "ECP Загрузка данных на сервер мото");
-                            msSqlDatabase.updateMoto(MotoEquipName, MotoDate, MotoShift, MotoDVS, MotoCompress, MotoPerfor, MotoMaslo, MotoLeft, MotoRight);
+                                Log.d("Alexey", "ECP Загрузка данных на сервер мото");
+                                msSqlDatabase.updateMoto(MotoEquipName, MotoDate, MotoShift, MotoDVS, MotoCompress, MotoPerfor, MotoMaslo, MotoLeft, MotoRight);
 
-                        } while (cursorMoto.moveToNext());
+                            } while (cursorMoto.moveToNext());
+                        }
+                    } catch (NumberFormatException e) {
+
                     }
+                    //Обновляем мнформацию по моточасам
                     //sqlLiteDatabase.close();
                 }
 
                 if ((loadNeedLoadParam()==5) || (loadNeedLoadParam()==4)) { //1 - чек-лист; 2 - наряд; 3 - моточасы; 4 - все;  5 - ПНВР; 6 - чек-лист опасности и средства контроля
-                    sqlLiteDatabase.open(getApplicationContext());
-                    String pnvrQuery = "SELECT User, Date, Shift, CheckedPersonal, Task, Workplace, Responsible, Team, PodrjadOrg, RiskTool, Dangers, Instruction, Сonformity, Assessment, ShortReview, ClassBehavior, BehaviorReview, PSO, ActionReview, Event FROM PNVR";
+                    try {
+                        sqlLiteDatabase.open(getApplicationContext());
+                        String pnvrQuery = "SELECT User, Date, Shift, CheckedPersonal, Task, Workplace, Responsible, Team, PodrjadOrg, RiskTool, Dangers, Instruction, Сonformity, Assessment, ShortReview, ClassBehavior, BehaviorReview, PSO, ActionReview, Event FROM PNVR";
 
-                    Log.d("Alexey","ПНВР " + pnvrQuery);
+                        Log.d("Alexey","ПНВР " + pnvrQuery);
 
-                    Cursor cursorPNVR = sqlLiteDatabase.database.rawQuery(pnvrQuery, null);
+                        Cursor cursorPNVR = sqlLiteDatabase.database.rawQuery(pnvrQuery, null);
 
-                    //Обновляем мнформацию по моточасам
-                    if (cursorPNVR.moveToFirst()) {
-                        do {
-                            String User = cursorPNVR.getString(0);
-                            String Date = cursorPNVR.getString(1);
-                            Log.d("Alexey","ПНВР Дата " + Date);
-                            int Shift = Integer.parseInt(cursorPNVR.getString(2));
-                            String CheckedPersonal = cursorPNVR.getString(3);
-                            String Task = cursorPNVR.getString(4);
-                            String Workplace = cursorPNVR.getString(5);
-                            String Responsible = cursorPNVR.getString(6);
-                            String Team = cursorPNVR.getString(7);
-                            String PodrjadOrg = cursorPNVR.getString(8);
-                            String RiskTool= cursorPNVR.getString(9);
-                            String Dangers = cursorPNVR.getString(10);
-                            String Instruction = cursorPNVR.getString(11);
-                            String Сonformity = cursorPNVR.getString(12);
-                            String Assessment = cursorPNVR.getString(13);
-                            String ShortReview = cursorPNVR.getString(14);
-                            String ClassBehavior = cursorPNVR.getString(15);
-                            String BehaviorReview = cursorPNVR.getString(16);
-                            String PSO = cursorPNVR.getString(17);
-                            String ActionReview= cursorPNVR.getString(18);
-                            String Event= cursorPNVR.getString(19);
+                        //Обновляем мнформацию по моточасам
+                        if (cursorPNVR.moveToFirst()) {
+                            do {
+                                String User = cursorPNVR.getString(0);
+                                String Date = cursorPNVR.getString(1);
+                                Log.d("Alexey","ПНВР Дата " + Date);
+                                int Shift = Integer.parseInt(cursorPNVR.getString(2));
+                                String CheckedPersonal = cursorPNVR.getString(3);
+                                String Task = cursorPNVR.getString(4);
+                                String Workplace = cursorPNVR.getString(5);
+                                String Responsible = cursorPNVR.getString(6);
+                                String Team = cursorPNVR.getString(7);
+                                String PodrjadOrg = cursorPNVR.getString(8);
+                                String RiskTool= cursorPNVR.getString(9);
+                                String Dangers = cursorPNVR.getString(10);
+                                String Instruction = cursorPNVR.getString(11);
+                                String Сonformity = cursorPNVR.getString(12);
+                                String Assessment = cursorPNVR.getString(13);
+                                String ShortReview = cursorPNVR.getString(14);
+                                String ClassBehavior = cursorPNVR.getString(15);
+                                String BehaviorReview = cursorPNVR.getString(16);
+                                String PSO = cursorPNVR.getString(17);
+                                String ActionReview= cursorPNVR.getString(18);
+                                String Event= cursorPNVR.getString(19);
 
-                            msSqlDatabase.updatePNVR(User, Date, Shift, CheckedPersonal, Task, Workplace, Responsible, Team, PodrjadOrg, RiskTool, Dangers, Instruction, Сonformity, Assessment, ShortReview, ClassBehavior, BehaviorReview, PSO, ActionReview, Event);
-                        } while (cursorPNVR.moveToNext());
+                                msSqlDatabase.updatePNVR(User, Date, Shift, CheckedPersonal, Task, Workplace, Responsible, Team, PodrjadOrg, RiskTool, Dangers, Instruction, Сonformity, Assessment, ShortReview, ClassBehavior, BehaviorReview, PSO, ActionReview, Event);
+                            } while (cursorPNVR.moveToNext());
+                            //sqlLiteDatabase.close();
+                        }
+                        sqlLiteDatabase.open(getApplicationContext());
+                        String deleteQuery = "DELETE FROM PNVR";
+                        sqlLiteDatabase.database.execSQL(deleteQuery);
                         //sqlLiteDatabase.close();
+                    } catch (SQLException | NumberFormatException e) {
                     }
-                    sqlLiteDatabase.open(getApplicationContext());
-                    String deleteQuery = "DELETE FROM PNVR";
-                    sqlLiteDatabase.database.execSQL(deleteQuery);
-                    //sqlLiteDatabase.close();
 
                 }
 
                 if ((loadNeedLoadParam()==6) || (loadNeedLoadParam()==4)) { //1 - чек-лист; 2 - наряд; 3 - моточасы; 4 - все;  5 - ПНВР; 6 - чек-лист опасности и средства контроля
-                    String checklistQuery = "Select UserId, Date, Shift, Object, UserDateTime, Danger, ControlTools, Improvement, UserIsSafety FROM CheckList";
+                   try {
+                       String checklistQuery = "Select UserId, Date, Shift, Object, UserDateTime, Danger, ControlTools, Improvement, UserIsSafety FROM CheckList";
 
-                    Cursor cursor = sqlLiteDatabase.database.rawQuery(checklistQuery, null);
+                       Cursor cursor = sqlLiteDatabase.database.rawQuery(checklistQuery, null);
 
-                    //Обновляем мнформацию по моточасам
-                    if (cursor.moveToFirst()) {
-                        do {
-                            int UserId = Integer.parseInt(cursor.getString(0));
-                            String Date = cursor.getString(1);
-                            int Shift = Integer.parseInt(cursor.getString(2));
-                            String Object = cursor.getString(3);
-                            String UserDateTime = cursor.getString(4);
-                            String Danger = cursor.getString(5);
-                            String ControlTools = cursor.getString(6);
-                            String Improvement = cursor.getString(7);
-                            String UserIsSafety = cursor.getString(8);
+                       //Обновляем мнформацию по моточасам
+                       if (cursor.moveToFirst()) {
+                           do {
+                               int UserId = Integer.parseInt(cursor.getString(0));
+                               String Date = cursor.getString(1);
+                               int Shift = Integer.parseInt(cursor.getString(2));
+                               String Object = cursor.getString(3);
+                               String UserDateTime = cursor.getString(4);
+                               String Danger = cursor.getString(5);
+                               String ControlTools = cursor.getString(6);
+                               String Improvement = cursor.getString(7);
+                               String UserIsSafety = cursor.getString(8);
 
-                            String sQuery = "Select TDWorkType FROM TaskDetail WHERE TDWP1 = " + Object;
-                            Cursor sCursor = sqlLiteDatabase.database.rawQuery(checklistQuery, null);
+                               String sQuery = "Select TDWorkType FROM TaskDetail WHERE TDWP1 = " + Object;
+                               Cursor sCursor = sqlLiteDatabase.database.rawQuery(checklistQuery, null);
 
                             /*String WorkType ="";
                             if (sCursor.moveToFirst()) {
@@ -906,9 +935,12 @@ public class SyncService extends Service {
                             }*/
 
 
-                            msSqlDatabase.updateCheckListByEmpl(UserId, Date, Shift, Object, UserDateTime, Danger, ControlTools, Improvement, UserIsSafety);
-                        } while (cursor.moveToNext());
-                    }
+                               msSqlDatabase.updateCheckListByEmpl(UserId, Date, Shift, Object, UserDateTime, Danger, ControlTools, Improvement, UserIsSafety);
+                           } while (cursor.moveToNext());
+                       }
+                   } catch (NumberFormatException e) {
+
+                   }
                 }
 
                 saveNeedLoadParam(0);
@@ -925,32 +957,33 @@ public class SyncService extends Service {
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         public boolean isHaveKey() {
-            String path = "/storage/emulated/0/Key";
-            Log.d("Files", "Path: " + path);
+            try {
+                String path = "/storage/emulated/0/Key";
+                Log.d("Files", "Path: " + path);
 
-            if (Files.exists(Paths.get(path))) {
-                File directory = new File(path);
-                File[] files = directory.listFiles();
-                Log.d("Files", "Size: " + files.length);
-                for (int i = 0; i < files.length; i++) {
-                    String name = files[i].getName();
-                    Log.d("Files", "FileName:" + files[i].getName());
-                    String filePath = path + "/" + files[i].getName();
-                    String extension = filePath.substring(filePath.lastIndexOf(".")).replace(".", "");
-                    Log.d("Files", "File Ex: " + extension);
+                if (Files.exists(Paths.get(path))) {
+                    File directory = new File(path);
+                    File[] files = directory.listFiles();
+                    Log.d("Files", "Size: " + files.length);
+                    for (int i = 0; i < files.length; i++) {
+                        String name = files[i].getName();
+                        Log.d("Files", "FileName:" + files[i].getName());
+                        String filePath = path + "/" + files[i].getName();
+                        String extension = filePath.substring(filePath.lastIndexOf(".")).replace(".", "");
+                        Log.d("Files", "File Ex: " + extension);
 
-                    boolean isBBegin = name.startsWith("RSA");
+                        boolean isBBegin = name.startsWith("RSA");
 
-                    if ((isBBegin) && (extension.equals("p12"))) {
-                        return true;
+                        if ((isBBegin) && (extension.equals("p12"))) {
+                            return true;
+                        }
                     }
+                    return false;
                 }
-                return false;
+            } catch (Exception e) {
             }
-            else
-                return false;
+            return false;
         }
-
     }
 
     class LoadModify extends AsyncTask<Void, Void, Boolean> {
@@ -1098,9 +1131,7 @@ public class SyncService extends Service {
 
 
 
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Log.d("Alexey", "Ошибка загрузки изменения наряда " + e.getMessage());
                 }
             }
@@ -1115,43 +1146,48 @@ public class SyncService extends Service {
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         public boolean isHaveKey() {
-            String path = "/storage/emulated/0/Key";
-            Log.d("Files", "Path: " + path);
+            try {
+                String path = "/storage/emulated/0/Key";
+                Log.d("Files", "Path: " + path);
 
-            if (Files.exists(Paths.get(path))) {
-                File directory = new File(path);
-                File[] files = directory.listFiles();
-                Log.d("Files", "Size: " + files.length);
-                for (int i = 0; i < files.length; i++) {
-                    String name = files[i].getName();
-                    Log.d("Files", "FileName:" + files[i].getName());
-                    String filePath = path + "/" + files[i].getName();
-                    String extension = filePath.substring(filePath.lastIndexOf(".")).replace(".", "");
-                    Log.d("Files", "File Ex: " + extension);
+                if (Files.exists(Paths.get(path))) {
+                    File directory = new File(path);
+                    File[] files = directory.listFiles();
+                    Log.d("Files", "Size: " + files.length);
+                    for (int i = 0; i < files.length; i++) {
+                        String name = files[i].getName();
+                        Log.d("Files", "FileName:" + files[i].getName());
+                        String filePath = path + "/" + files[i].getName();
+                        String extension = filePath.substring(filePath.lastIndexOf(".")).replace(".", "");
+                        Log.d("Files", "File Ex: " + extension);
 
-                    boolean isBBegin = name.startsWith("RSA");
+                        boolean isBBegin = name.startsWith("RSA");
 
-                    if ((isBBegin) && (extension.equals("p12"))) {
-                        return true;
+                        if ((isBBegin) && (extension.equals("p12"))) {
+                            return true;
+                        }
                     }
+                    return false;
                 }
-                return false;
+            } catch (Exception e) {
+
             }
-            else
-                return false;
-
-
+            return false;
         }
     }
 
     private void sendEmail(String email) {
-        //Getting content for email
-        String subject = emailSubject;
-        String message = emailText;
-        //Creating SendMail object
-        SendMail sm = new SendMail(this, email, subject, message);
-        //Executing sendmail to send email
-        sm.execute();
+        try {
+            //Getting content for email
+            String subject = emailSubject;
+            String message = emailText;
+            //Creating SendMail object
+            SendMail sm = new SendMail(this, email, subject, message);
+            //Executing sendmail to send email
+            sm.execute();
+        } catch (Exception e) {
+
+        }
     }
 
     @Nullable
@@ -1162,10 +1198,14 @@ public class SyncService extends Service {
 
     private void saveNeedSign(int needSign)
     {
-        sPref = getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
-        SharedPreferences.Editor ed = sPref.edit();
-        ed.putInt("NeedSign", Integer.valueOf(needSign));
-        ed.commit();
+        try {
+            sPref = getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
+            SharedPreferences.Editor ed = sPref.edit();
+            ed.putInt("NeedSign", Integer.valueOf(needSign));
+            ed.commit();
+        } catch (Exception e) {
+
+        }
     }
 
     private int loadNeedSign()
@@ -1178,17 +1218,25 @@ public class SyncService extends Service {
 
     private void saveNeedLoadParam(int needLoad)
     {
-        sPref = getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
-        SharedPreferences.Editor ed = sPref.edit();
-        ed.putString("NeedLoad", String.valueOf(needLoad));
-        ed.commit();
+        try{
+            sPref = getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
+            SharedPreferences.Editor ed = sPref.edit();
+            ed.putString("NeedLoad", String.valueOf(needLoad));
+            ed.commit();
+        } catch (Exception e) {
+
+        }
     }
 
     public void showBottomToast(final String msg)
     {
-        Toast toast1 = Toast.makeText(SyncService.this,msg, Toast.LENGTH_LONG);
-        toast1.setGravity(Gravity.BOTTOM, 0, 20);
-        toast1.show();
+        try {
+            Toast toast1 = Toast.makeText(SyncService.this,msg, Toast.LENGTH_LONG);
+            toast1.setGravity(Gravity.BOTTOM, 0, 20);
+            toast1.show();
+        } catch (Exception e) {
+
+        }
     }
 
     private void sendPhotoToServer()
@@ -1267,17 +1315,21 @@ public class SyncService extends Service {
     }
 
     private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel serviceChannel = new NotificationChannel(
-                    CHANNEL_ID,
-                    "Служба синхронизации данных",
-                    NotificationManager.IMPORTANCE_LOW
-                    //NotificationManager.IMPORTANCE_HIGH
-            );
-            serviceChannel.setSound(null, null);
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel serviceChannel = new NotificationChannel(
+                        CHANNEL_ID,
+                        "Служба синхронизации данных",
+                        NotificationManager.IMPORTANCE_LOW
+                        //NotificationManager.IMPORTANCE_HIGH
+                );
+                serviceChannel.setSound(null, null);
 
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(serviceChannel);
+                NotificationManager manager = getSystemService(NotificationManager.class);
+                manager.createNotificationChannel(serviceChannel);
+            }
+        } catch (Exception e) {
+            Log.d("Alexey", e.getMessage());
         }
     }
 
