@@ -1300,5 +1300,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             e.printStackTrace();
         }
     }
+
+
+    //////////////////////////////////////
+    // Получение системных путей
+    private String getRootOfExternalStorage() {
+        File[] externalStorageFiles = ContextCompat.getExternalFilesDirs(this,null);
+        for(File file : externalStorageFiles) {
+            // Получение полного пути приложения  /storage/emulated/0/Android/data/com.example.sportapp/files
+//            return file.getAbsolutePath();
+            // получение системного пути /storage/emulated/0
+            return file.getAbsolutePath().replaceAll("/Android/data/" + getPackageName() + "/files", "");
+        }
+        return null;
+    }
+    ////////////////////////////////
 }
 
