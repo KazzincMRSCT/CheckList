@@ -51,6 +51,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kazzinc.checklist.ActivityForNotification.OnVPNTOReboot;
 import com.kazzinc.checklist.Model.EmlpECPKey;
 import com.kazzinc.checklist.Model.Equipment;
 import com.kazzinc.checklist.Model.HelpInUseApps;
@@ -64,7 +65,6 @@ import com.kazzinc.checklist.Model.TaskEmployee;
 import com.kazzinc.checklist.Model.TaskUser;
 import com.kazzinc.checklist.Model.User;
 import com.kazzinc.checklist.Model.WorkPlace;
-import com.kazzinc.checklist.ActivityForNotification.OnVPNTOReboot;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -140,6 +140,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
+    private static String[] PERMISSIONS_WIFI = {
+            Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.CHANGE_WIFI_STATE
+    };
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +153,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         getSupportActionBar().hide();
 
+
         verifyStoragePeremissions(LoginActivity.this);
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_FINE_LOCATION},2);
 
         createLogFile();
         CheckKey();
@@ -240,6 +248,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.email_login_form);
         mProgressView = findViewById(R.id.login_progress);
 
+        Toast.makeText(getApplicationContext(), getWifi(), Toast.LENGTH_LONG).show();
+
 
         if(vpnActive(this)){
             new SyncService().setVpnConnection(this,1);
@@ -258,7 +268,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         }
     }
-
 
     //Проверяем включен ли впн на телефоне
     public static boolean vpnActive(Context context){
@@ -288,9 +297,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return vpnInUse;
     }
 
-
-
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void CheckKey() {
         String path = "/storage/emulated/0/Key";
@@ -299,7 +305,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (Files.exists(Paths.get(path))) {
             File directory = new File(path);
             File[] files = directory.listFiles();
-//            Log.d("Files", "Size: " + files.length);
+
             for (int i = 0; i < files.length; i++) {
                 String name = files[i].getName();
                 Log.d("Files", "FileName:" + files[i].getName());

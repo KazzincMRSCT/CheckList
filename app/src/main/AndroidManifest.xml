@@ -34,6 +34,9 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
+    <uses-feature android:name="android.hardware.wifi"
+        android:required="true"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -97,10 +100,12 @@
         <activity android:name=".WorkPlaceSelect" />
         <activity android:name=".QuestionsActivity" />
         <activity android:name=".MainActivity" />
+
         <activity
             android:name=".LoginActivity"
             android:label="Чек-лист"
-            android:windowSoftInputMode="stateVisible" >
+            android:windowSoftInputMode="stateVisible"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
