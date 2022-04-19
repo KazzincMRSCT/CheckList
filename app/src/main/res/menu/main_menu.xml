@@ -25,4 +25,10 @@
         android:icon="@drawable/water_hose"
         android:title="РВД"
         app:showAsAction="ifRoom|withText"/>
+
+    <item
+        android:id="@+id/chat"
+        android:icon="@drawable/chat4"
+        android:title="Чат"
+        app:showAsAction="ifRoom|withText"/>
 </menu>

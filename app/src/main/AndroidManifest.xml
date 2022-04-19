@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.kazzinc.checklist" >
+    package="com.kazzinc.checklist">
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -27,15 +27,16 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.REBOOT"
+    <uses-permission
+        android:name="android.permission.REBOOT"
         tools:ignore="ProtectedPermissions" />
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-
-    <uses-feature android:name="android.hardware.wifi"
-        android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -44,7 +45,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true" >
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".Chat.ChatDialog"
+            android:exported="false" />
+        <activity
+            android:name=".Chat.ChatMain"
+            android:exported="false" />
         <activity
             android:name=".ActivityForNotification.OnVPNTOReboot"
             android:exported="false" />
@@ -100,12 +107,11 @@
         <activity android:name=".WorkPlaceSelect" />
         <activity android:name=".QuestionsActivity" />
         <activity android:name=".MainActivity" />
-
         <activity
             android:name=".LoginActivity"
+            android:exported="true"
             android:label="Чек-лист"
-            android:windowSoftInputMode="stateVisible"
-            android:exported="true">
+            android:windowSoftInputMode="stateVisible">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -117,7 +123,7 @@
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />

@@ -23,6 +23,9 @@ import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.kazzinc.checklist.ActivityForNotification.OnVPNTOReboot;
+import com.kazzinc.checklist.Chat.ChatMain;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +78,9 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
                 break;
             case "rvd":
                 bottomNavigationView.setSelectedItemId(R.id.rvd);
+                break;
+            case "chat":
+                bottomNavigationView.setSelectedItemId(R.id.chat);
                 break;
         }
 
@@ -141,6 +147,10 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
                 scrollView.fullScroll(ScrollView.FOCUS_UP);
                 selectedPage = "rvd";
                 invalidateOptionsMenu();
+                return true;
+            case R.id.chat:
+                Intent intent = new Intent(this, ChatMain.class);
+                startActivity(intent);
                 return true;
         }
         return false;
