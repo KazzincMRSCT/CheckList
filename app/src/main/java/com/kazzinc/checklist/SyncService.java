@@ -27,11 +27,11 @@ import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import com.kazzinc.checklist.ActivityForNotification.OnVPNTOReboot;
 import com.kazzinc.checklist.Model.Answer;
 import com.kazzinc.checklist.Model.Task;
 import com.kazzinc.checklist.Model.TaskDetail;
 import com.kazzinc.checklist.Model.TaskDetailModify;
-import com.kazzinc.checklist.ActivityForNotification.OnVPNTOReboot;
 import com.kazzinc.services.APIClient;
 import com.kazzinc.services.UploadService;
 

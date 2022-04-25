@@ -791,5 +791,33 @@ public class MsSqlDatabase {
         }
         return null;
     }
+
+
+    //////////////////////////////
+    public void InsertCheckApp(String EmplName, int tubNum, int AreaId, String VersionApp) {
+        Gson gson = new Gson();
+        String resultJson ="";
+
+        String methodURL = "CheckApp";
+
+        try {
+            ContentValues params = new ContentValues();
+            params.put("EmplName", EmplName);
+            params.put("tubNum", tubNum);
+            params.put("AreaId", AreaId);
+            params.put("VersionApp", VersionApp);
+
+            resultJson = httpRequestUtility.RequestToServer(serverURL + methodURL, "GET", params);
+
+
+        } catch (Exception e) {
+            Log.d("Alexey", "InsertCheckApp1 " + e.getMessage());
+            e.printStackTrace();
+        }
+        Log.d("Alexey", "InsertCheckApp1 " + resultJson);
+    }
+
+    /////////////////////////////
+
 }
 

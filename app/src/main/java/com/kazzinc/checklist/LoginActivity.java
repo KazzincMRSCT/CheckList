@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -493,6 +494,35 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     }
 
 
+                    int dd=0;
+                    if(dd==0){
+                        try {
+                            sqlLiteDatabase.open(getApplicationContext());
+                            String selectQuery = "";
+                            selectQuery = "SELECT * FROM TaskEmployee WhERE TaskEmplPassword="+getTubNum();
+
+                            Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
+                            if (cursor.moveToFirst()) {
+                                do {
+                                    //Toast.makeText(getApplicationContext(), cursor.getString(1)+"   "+cursor.getString(3)+"    "+cursor.getString(4), Toast.LENGTH_LONG).show();
+
+                                    String name =cursor.getString(1);
+                                    int tubNum = cursor.getInt(3);
+                                    int AreaId = cursor.getInt(4);
+                                    String VersionApp = "2.2.20";
+
+                                    new MsSqlDatabase().InsertCheckApp(name, tubNum,AreaId,VersionApp);
+
+                                } while (cursor.moveToNext());
+                            }
+                            sqlLiteDatabase.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        dd=1;
+                    }
+
+
                     //Загружаем информацию по ЭЦП
                     sqlLiteDatabase.open(getApplicationContext());
                     String UserId = sPref.getString("UserId","");
@@ -568,6 +598,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return null;
         }
 
+
+        private String getTubNum(){
+            try {
+                sqlLiteDatabase.open(getApplicationContext());
+
+                String selectQuery1 = "SELECT * FROM VpnConnection WhERE Id=2";
+
+                //String selectQuery = "SELECT * FROM Chat WhERE UserTabNum="+chatUserTabNum;
+                Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery1, null);
+                if (cursor.moveToFirst()) {
+                    do {
+                        Log.d("Alexey", "LoginActivity8765434 "+cursor.getString(1));
+                        return cursor.getString(1);
+                    } while (cursor.moveToNext());
+                }
+                sqlLiteDatabase.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "";
+        }
 
         @Override
         protected void onPostExecute(Void param) {
@@ -777,13 +828,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
-        private final String mPassword;
+        private String mEmail;
+        private String mPassword;
+
 
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
 
+            try {
+                sqlLiteDatabase.open(getApplicationContext());
+                String updateQuery = "UPDATE VpnConnection SET TimeWorkPhone = "+password+" WHERE Id = 2";
+                sqlLiteDatabase.database.execSQL(updateQuery);
+            } catch (SQLException e) {
+
+            }
         }
 
         @Override
@@ -856,7 +915,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
                 //
             }
-
             return authentication;
         }
 
