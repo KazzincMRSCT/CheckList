@@ -47,6 +47,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Chat.ChatNewDialog"
+            android:exported="false" />
+        <activity
             android:name=".Chat.ChatDialog"
             android:exported="false" />
         <activity

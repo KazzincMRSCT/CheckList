@@ -43,10 +43,6 @@ public class AnswerResultActivity extends AppCompatActivity {
             Log.d("Alexey",e.getMessage());
         }
 
-        final String userIdTest = userId;
-        final String dateTest = date;
-        final String workplaceTest = workplace;
-
         LinearLayout rContainer = (LinearLayout) findViewById(R.id.resultAnswerContainer);
 
         rContainer.removeAllViews();

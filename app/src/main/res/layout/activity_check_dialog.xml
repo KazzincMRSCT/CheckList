@@ -10,4 +10,5 @@
         android:layout_height="200px"
         android:id="@+id/dancer"
         android:src="@drawable/giphy" />
+
 </LinearLayout>

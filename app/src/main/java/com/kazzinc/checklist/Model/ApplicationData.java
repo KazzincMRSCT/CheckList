@@ -1,6 +1,4 @@
-package com.kazzinc.checklist;
-
-import com.kazzinc.checklist.Model.User;
+package com.kazzinc.checklist.Model;
 
 public class ApplicationData {
     private static User authUser;

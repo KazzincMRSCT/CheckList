@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.kazzinc.checklist.Model.Answer;
+import com.kazzinc.checklist.Model.ChatModel;
 import com.kazzinc.checklist.Model.EmlpECPKey;
 import com.kazzinc.checklist.Model.Equipment;
 import com.kazzinc.checklist.Model.GSM;
@@ -1340,6 +1341,19 @@ public class SqlLiteDatabase extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    public void insertChat(ChatModel chatModel) {
+        ContentValues values = new ContentValues();
+        values.put("UserTabNum",chatModel.getUserTabNum());
+        values.put("UserName", chatModel.getUserName());
+        values.put("DateTime", chatModel.getDateTime());
+        values.put("Message", chatModel.getMessage());
+        values.put("Status", chatModel.getStatus());
+        values.put("Deleted", chatModel.getDeleted());
+
+        database.insert("Chat", null, values);
     }
 
     /////////////////

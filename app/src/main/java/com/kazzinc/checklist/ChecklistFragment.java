@@ -267,6 +267,7 @@ public class ChecklistFragment extends Fragment {
 
         return result;
     }
+
     private boolean IsHaveWorkPlace(){
 
         boolean result = false;

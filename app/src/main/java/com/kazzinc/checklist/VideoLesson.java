@@ -79,6 +79,7 @@ public class VideoLesson extends AppCompatActivity {
             btn.setFocusable(true);
             btn.setHapticFeedbackEnabled(true);
             btn.setAllCaps(true);
+
             ll.addView(btn);
 
             int finalI = i;
@@ -89,6 +90,7 @@ public class VideoLesson extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+
             llCont.addView(ll);
         }
     }

@@ -52,6 +52,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kazzinc.checklist.ActivityForNotification.OnVPNTOReboot;
+import com.kazzinc.checklist.Model.ApplicationData;
 import com.kazzinc.checklist.Model.EmlpECPKey;
 import com.kazzinc.checklist.Model.Equipment;
 import com.kazzinc.checklist.Model.HelpInUseApps;
@@ -248,7 +249,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.email_login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        Toast.makeText(getApplicationContext(), getWifi(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(), getWifi(), Toast.LENGTH_LONG).show();
 
 
         if(vpnActive(this)){
