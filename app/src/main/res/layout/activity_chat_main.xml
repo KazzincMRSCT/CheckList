@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <LinearLayout
             android:id="@+id/llCont"
             android:layout_width="match_parent"
@@ -24,16 +23,15 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/fab"
-        android:layout_width="80dp"
+        android:id="@+id/btnNewChat"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_height="80dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="16dp"
-        app:fabCustomSize="80dp"
-        app:maxImageSize="50dp"
-        android:background="@drawable/plus"/>
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/plus_icon_2"
+        />
 
 </RelativeLayout>
 

@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -42,12 +43,10 @@ public class ChatMain extends AppCompatActivity {
 
 
         try {
-
-            int id = 1;
             String selectQuery;
 
             sqlLiteDatabase.open(this);
-            selectQuery = "SELECT (SELECT DISTINCT UserName FROM Chat) as UserName, (SELECT DISTINCT Message FROM Chat ORDER BY Id DESC) as Message, (SELECT DISTINCT DateTime FROM Chat ORDER BY DateTime DESC) as DateTime, (SELECT DISTINCT UserTabNum FROM Chat) as UserTabNum, (SELECT DISTINCT Status FROM Chat ORDER BY Status DESC) as Status, (SELECT DISTINCT Deleted FROM Chat ORDER BY Deleted DESC) as Deleted";
+            selectQuery = "SELECT  (SELECT DISTINCT UserTabNum FROM Chat) as UserTabNum, (SELECT DISTINCT UserName FROM Chat) as UserName,(SELECT DISTINCT DateTime FROM Chat ORDER BY DateTime DESC) as DateTime,  (SELECT DISTINCT Message FROM Chat ORDER BY Id DESC) as Message, (SELECT DISTINCT Status FROM Chat ORDER BY Status DESC) as Status, (SELECT DISTINCT Deleted FROM Chat ORDER BY Deleted DESC) as Deleted";
             //selectQuery = "SELECT * FROM Chat";
 
             Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
@@ -56,21 +55,19 @@ public class ChatMain extends AppCompatActivity {
                 do {
                     //int chatId = cursor.getInt(0);
 
-                    int chatUserTabNum = cursor.getInt(3);
+                    int chatUserTabNum = cursor.getInt(0);
 
-                    String chatUserName = cursor.getString(0);
+                    String chatUserName = cursor.getString(1);
 
                     String chatDateTime = cursor.getString(2);
 
-                    String chatMsg = cursor.getString(1);
+                    String chatMsg = cursor.getString(3);
 
                     int chatStatus = cursor.getInt(4);
 
 
                     final CardView cw = new CardView(this);
                     LinearLayout linearLayout2 = new LinearLayout(this);
-                    //cw.setId(chatUserTabNum);
-                    //cw.setTransitionName(date + ";" + workplace);
                     cw.setCardBackgroundColor(Color.parseColor("#444446"));
 
                     cw.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +87,7 @@ public class ChatMain extends AppCompatActivity {
 
 
                     LinearLayout.LayoutParams layoutParamsTV = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT,1f);
+                            ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
 
                     LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
@@ -102,7 +99,7 @@ public class ChatMain extends AppCompatActivity {
                             LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                     ll.setOrientation(LinearLayout.VERTICAL);
-                    ll.setPadding(20,20,20,20);
+                    ll.setPadding(20, 20, 20, 20);
 
                     layoutParams.setMargins(0, 10, 0, 0);
 
@@ -120,7 +117,7 @@ public class ChatMain extends AppCompatActivity {
                     tvDate.setGravity(Gravity.RIGHT);
                     linearLayout2.addView(tvDate);
 
-                    ll.addView(linearLayout2 );
+                    ll.addView(linearLayout2);
 
                     TextView tvEndMsg = new TextView(this);
                     tvEndMsg.setText(Html.fromHtml("<font color='#979797'> " + chatMsg + "</font>"), TextView.BufferType.SPANNABLE);
@@ -133,17 +130,22 @@ public class ChatMain extends AppCompatActivity {
 
                     rContainer.addView(cw, layoutParams);
 
-                    id++;
-
                 } while (cursor.moveToNext());
             }
             sqlLiteDatabase.close();
+        } catch (Exception e) {
+            Log.d("Alexey", e.getMessage());
         }
-        catch (Exception e){
-            Log.d("Alexey",e.getMessage());
-        }
-    }
+        Button btnNewChat = findViewById(R.id.btnNewChat);
 
+        btnNewChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ChatNewDialog.class);
+                startActivity(intent);
+            }
+        });
+    }
 
 
     private void loadUserInfo()
