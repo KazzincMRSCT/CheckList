@@ -496,7 +496,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                     int checkUpload =0;
 
-                    if(checkUpload ==0){
+                    if(checkUpload==0){
                         try {
                             sqlLiteDatabase.open(getApplicationContext());
                             String selectQuery = "";
@@ -510,7 +510,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     String name =cursor.getString(1);
                                     int tubNum = cursor.getInt(3);
                                     int AreaId = cursor.getInt(4);
-                                    String VersionApp = "2.2.20";
+                                    String VersionApp = getVersionApp();
 
                                     new MsSqlDatabase().InsertCheckApp(name, tubNum,AreaId,VersionApp);
 
@@ -1053,6 +1053,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mVersion = (TextView) findViewById(R.id.version);
         mVersion.setText("Версия " + Version);
+    }
+
+    public String getVersionApp() {
+        sqlLiteDatabase.open(LoginActivity.this);
+        String selectQuery = "SELECT Version FROM Updates ";
+
+        Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                return cursor.getString(0);
+            }
+            while (cursor.moveToNext());
+
+        }
+        sqlLiteDatabase.close();
+
+        return "";
     }
 
     public static boolean NeedUpdate(String vDB, String vServer) {
