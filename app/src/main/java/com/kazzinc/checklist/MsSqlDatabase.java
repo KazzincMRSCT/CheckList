@@ -776,7 +776,7 @@ public class MsSqlDatabase {
     }
 
 
-    //получить всех пользователей
+    //получить уведомление об аварии
     public ArrayList<Notification> GetNotification() {
         Gson gson = new Gson();
         String methodURL = "GetNotification";
@@ -793,9 +793,8 @@ public class MsSqlDatabase {
     }
 
 
-    //////////////////////////////
+    //отправляем информацию о пользователе и его версию приложения
     public void InsertCheckApp(String EmplName, int tubNum, int AreaId, String VersionApp) {
-        Gson gson = new Gson();
         String resultJson ="";
 
         String methodURL = "CheckApp";
@@ -816,8 +815,5 @@ public class MsSqlDatabase {
         }
         Log.d("Alexey", "InsertCheckApp1 " + resultJson);
     }
-
-    /////////////////////////////
-
 }
 
