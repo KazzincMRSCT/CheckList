@@ -494,8 +494,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     }
 
 
-                    int dd=0;
-                    if(dd==0){
+                    int checkUpload =0;
+
+                    if(checkUpload ==0){
                         try {
                             sqlLiteDatabase.open(getApplicationContext());
                             String selectQuery = "";
@@ -519,7 +520,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        dd=1;
+                        checkUpload =1;
                     }
 
 
