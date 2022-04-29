@@ -17,7 +17,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.kazzinc.checklist.MenuActivity;
 import com.kazzinc.checklist.R;
 import com.kazzinc.checklist.SqlLiteDatabase;
 
@@ -43,95 +45,109 @@ public class ChatMain extends AppCompatActivity {
 
 
         try {
-            String selectQuery;
+            String selectQuery,selectQuery1;
 
             sqlLiteDatabase.open(this);
-            selectQuery = "SELECT  (SELECT DISTINCT UserTabNum FROM Chat) as UserTabNum, (SELECT DISTINCT UserName FROM Chat) as UserName,(SELECT DISTINCT DateTime FROM Chat ORDER BY DateTime DESC) as DateTime,  (SELECT DISTINCT Message FROM Chat ORDER BY Id DESC) as Message, (SELECT DISTINCT Status FROM Chat ORDER BY Status DESC) as Status, (SELECT DISTINCT Deleted FROM Chat ORDER BY Deleted DESC) as Deleted";
-            //selectQuery = "SELECT * FROM Chat";
+            selectQuery = "SELECT DISTINCT UserTabNum FROM Chat";
 
             Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
 
+
             if (cursor.moveToFirst()) {
                 do {
-                    //int chatId = cursor.getInt(0);
 
-                    int chatUserTabNum = cursor.getInt(0);
+                    selectQuery1 = "SELECT UserTabNum, UserName,DateTime, Message, Status From Chat WHERE UserTabNum=" + cursor.getInt(0) +" ORDER BY DateTime DESC LIMIT 1";
 
-                    String chatUserName = cursor.getString(1);
+                    Log.d("Alexey", "12345 создан " + selectQuery1);
 
-                    String chatDateTime = cursor.getString(2);
+                    Cursor cursor1 = sqlLiteDatabase.database.rawQuery(selectQuery1, null);
 
-                    String chatMsg = cursor.getString(3);
+                    if (cursor1.moveToFirst()) {
+                        do {
 
-                    int chatStatus = cursor.getInt(4);
+                            //int chatId = cursor.getInt(0);
 
+                            int chatUserTabNum = cursor1.getInt(0);
 
-                    final CardView cw = new CardView(this);
-                    LinearLayout linearLayout2 = new LinearLayout(this);
-                    cw.setCardBackgroundColor(Color.parseColor("#444446"));
+                            String chatUserName = cursor1.getString(1);
 
-                    cw.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(getApplicationContext(), ChatDialog.class);
-                            intent.putExtra("userName", chatUserName);
-                            intent.putExtra("chatUserTabNum", chatUserTabNum);
-                            intent.putExtra("chatMsg", chatMsg);
-                            intent.putExtra("chatStatus", chatStatus);
-                            finish();
-                            startActivity(intent);
-                        }
-                    });
+                            String chatDateTime = cursor1.getString(2);
 
-                    LinearLayout ll = new LinearLayout(this);
+                            String chatMsg = cursor1.getString(3);
+
+                            int chatStatus = cursor1.getInt(4);
 
 
-                    LinearLayout.LayoutParams layoutParamsTV = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+                            final CardView cw = new CardView(this);
+                            LinearLayout linearLayout2 = new LinearLayout(this);
+                            cw.setCardBackgroundColor(Color.parseColor("#444446"));
 
-                    LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT);
+                            cw.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(getApplicationContext(), ChatDialog.class);
+                                    intent.putExtra("userName", chatUserName);
+                                    intent.putExtra("chatUserTabNum", chatUserTabNum);
+                                    intent.putExtra("chatMsg", chatMsg);
+                                    intent.putExtra("chatStatus", chatStatus);
+                                    finish();
+                                    startActivity(intent);
+                                }
+                            });
 
-                    linearLayout2.setOrientation(LinearLayout.HORIZONTAL);
-                    linearLayout2.setLayoutParams(layoutParams1);
-
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                    ll.setOrientation(LinearLayout.VERTICAL);
-                    ll.setPadding(20, 20, 20, 20);
-
-                    layoutParams.setMargins(0, 10, 0, 0);
-
-                    TextView tvName = new TextView(this);
-                    tvName.setText(Html.fromHtml("<font color='#E1E2E5'> " + chatUserName + "</font>"), TextView.BufferType.SPANNABLE);
-                    tvName.setTypeface(ResourcesCompat.getFont(this, R.font.exo_2_light));
-                    tvName.setTextSize(21);
-                    tvName.setLayoutParams(layoutParamsTV);
-                    linearLayout2.addView(tvName);
-
-                    TextView tvDate = new TextView(this);
-                    tvDate.setText(Html.fromHtml("<font color='#E1E2E5'> " + chatDateTime + "</font>"), TextView.BufferType.SPANNABLE);
-                    tvDate.setTextSize(15);
-                    tvDate.setLayoutParams(layoutParamsTV);
-                    tvDate.setGravity(Gravity.RIGHT);
-                    linearLayout2.addView(tvDate);
-
-                    ll.addView(linearLayout2);
-
-                    TextView tvEndMsg = new TextView(this);
-                    tvEndMsg.setText(Html.fromHtml("<font color='#979797'> " + chatMsg + "</font>"), TextView.BufferType.SPANNABLE);
-                    tvEndMsg.setTextSize(18);
-
-                    ll.addView(tvEndMsg);
+                            LinearLayout ll = new LinearLayout(this);
 
 
-                    cw.addView(ll);
+                            LinearLayout.LayoutParams layoutParamsTV = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
 
-                    rContainer.addView(cw, layoutParams);
+                            LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT);
 
+                            linearLayout2.setOrientation(LinearLayout.HORIZONTAL);
+                            linearLayout2.setLayoutParams(layoutParams1);
+
+                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                            ll.setOrientation(LinearLayout.VERTICAL);
+                            ll.setPadding(20, 20, 20, 20);
+
+                            layoutParams.setMargins(0, 10, 0, 0);
+
+                            TextView tvName = new TextView(this);
+                            tvName.setText(Html.fromHtml("<font color='#E1E2E5'> " + chatUserName + "</font>"), TextView.BufferType.SPANNABLE);
+                            tvName.setTypeface(ResourcesCompat.getFont(this, R.font.exo_2_light));
+                            tvName.setTextSize(21);
+                            tvName.setLayoutParams(layoutParamsTV);
+                            linearLayout2.addView(tvName);
+
+                            TextView tvDate = new TextView(this);
+                            tvDate.setText(Html.fromHtml("<font color='#E1E2E5'> " + chatDateTime + "</font>"), TextView.BufferType.SPANNABLE);
+                            tvDate.setTextSize(15);
+                            tvDate.setLayoutParams(layoutParamsTV);
+                            tvDate.setGravity(Gravity.RIGHT);
+                            linearLayout2.addView(tvDate);
+
+                            ll.addView(linearLayout2);
+
+                            TextView tvEndMsg = new TextView(this);
+                            tvEndMsg.setText(Html.fromHtml("<font color='#979797'> " + chatMsg + "</font>"), TextView.BufferType.SPANNABLE);
+                            tvEndMsg.setTextSize(18);
+
+                            ll.addView(tvEndMsg);
+
+
+                            cw.addView(ll);
+
+                            rContainer.addView(cw, layoutParams);
+
+                        } while (cursor1.moveToNext());
+                    }
                 } while (cursor.moveToNext());
             }
+
+
             sqlLiteDatabase.close();
         } catch (Exception e) {
             Log.d("Alexey", e.getMessage());
@@ -163,6 +179,9 @@ public class ChatMain extends AppCompatActivity {
         int id = item.getItemId();
         switch(id){
             case android.R.id.home:
+                Intent intent = new Intent(getApplication(), MenuActivity.class);
+                intent.putExtra("inputPage", "task");
+                startActivity(intent);
                 finish();
                 return true;
         }

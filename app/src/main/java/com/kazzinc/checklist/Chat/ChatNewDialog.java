@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kazzinc.checklist.MenuActivity;
 import com.kazzinc.checklist.R;
 import com.kazzinc.checklist.SqlLiteDatabase;
 
@@ -39,7 +40,7 @@ public class ChatNewDialog extends AppCompatActivity {
             String selectQuery;
 
             sqlLiteDatabase.open(this);
-            selectQuery = "SELECT (SELECT DISTINCT UserName FROM Chat) as UserName, (SELECT DISTINCT Message FROM Chat ORDER BY Id DESC) as Message, (SELECT DISTINCT DateTime FROM Chat ORDER BY DateTime DESC) as DateTime, (SELECT DISTINCT UserTabNum FROM Chat) as UserTabNum, (SELECT DISTINCT Status FROM Chat ORDER BY Status DESC) as Status, (SELECT DISTINCT Deleted FROM Chat ORDER BY Deleted DESC) as Deleted";
+            selectQuery = "SELECT TaskEmplName, TaskEmplPassword, TaskEmplAreaId From TaskEmployee LIMIT 50";
             //selectQuery = "SELECT * FROM Chat";
 
             Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
@@ -48,15 +49,15 @@ public class ChatNewDialog extends AppCompatActivity {
                 do {
                     //int chatId = cursor.getInt(0);
 
-                    int chatUserTabNum = cursor.getInt(3);
+                    int chatUserTabNum = cursor.getInt(1);
 
                     String chatUserName = cursor.getString(0);
 
-                    String chatDateTime = cursor.getString(2);
+//                    String chatDateTime = cursor.getString(2);
 
-                    String chatMsg = cursor.getString(1);
+//                    String chatMsg = cursor.getString(1);
 
-                    int chatStatus = cursor.getInt(4);
+//                    int chatStatus = cursor.getInt(4);
 
 
                     final CardView cw = new CardView(this);
@@ -71,8 +72,8 @@ public class ChatNewDialog extends AppCompatActivity {
                             Intent intent = new Intent(getApplicationContext(), ChatDialog.class);
                             intent.putExtra("userName", chatUserName);
                             intent.putExtra("chatUserTabNum", chatUserTabNum);
-                            intent.putExtra("chatMsg", chatMsg);
-                            intent.putExtra("chatStatus", chatStatus);
+//                            intent.putExtra("chatMsg", chatMsg);
+//                            intent.putExtra("chatStatus", chatStatus);
                             finish();
                             startActivity(intent);
                         }
@@ -105,20 +106,19 @@ public class ChatNewDialog extends AppCompatActivity {
                     tvName.setLayoutParams(layoutParamsTV);
                     linearLayout2.addView(tvName);
 
-                    TextView tvDate = new TextView(this);
-                    tvDate.setText(Html.fromHtml("<font color='#E1E2E5'> " + chatDateTime + "</font>"), TextView.BufferType.SPANNABLE);
-                    tvDate.setTextSize(15);
-                    tvDate.setLayoutParams(layoutParamsTV);
-                    tvDate.setGravity(Gravity.RIGHT);
-                    linearLayout2.addView(tvDate);
+//                    TextView tvDate = new TextView(this);
+//                    tvDate.setText(Html.fromHtml("<font color='#E1E2E5'> " + chatDateTime + "</font>"), TextView.BufferType.SPANNABLE);
+//                    tvDate.setTextSize(15);
+//                    tvDate.setLayoutParams(layoutParamsTV);
+//                    tvDate.setGravity(Gravity.RIGHT);
+//                    linearLayout2.addView(tvDate);
 
                     ll.addView(linearLayout2 );
 
-                    TextView tvEndMsg = new TextView(this);
-                    tvEndMsg.setText(Html.fromHtml("<font color='#979797'> " + chatMsg + "</font>"), TextView.BufferType.SPANNABLE);
-                    tvEndMsg.setTextSize(18);
-
-                    ll.addView(tvEndMsg);
+//                    TextView tvEndMsg = new TextView(this);
+//                    tvEndMsg.setText(Html.fromHtml("<font color='#979797'> " + chatMsg + "</font>"), TextView.BufferType.SPANNABLE);
+//                    tvEndMsg.setTextSize(18);
+//                    ll.addView(tvEndMsg);
 
 
                     cw.addView(ll);
@@ -141,8 +141,8 @@ public class ChatNewDialog extends AppCompatActivity {
         int id = item.getItemId();
         switch(id){
             case android.R.id.home:
-                Intent intent = new Intent(getApplicationContext(), ChatMain.class);
-                finish();
+                Intent intent = new Intent(getApplication(), MenuActivity.class);
+                intent.putExtra("inputPage", "chat");
                 startActivity(intent);
                 return true;
         }

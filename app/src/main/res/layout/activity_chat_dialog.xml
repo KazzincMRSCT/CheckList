@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
         <EditText
@@ -37,10 +38,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="20"
             android:ems="10"
-            android:textColorHint="@color/colorPrimaryDark"
-            android:hint="Сообщение"
-            android:textSize="20dp"
+            android:textColorHint="@color/colorDarkLight3"
+            android:hint="Введите сообщение..."
+            android:textSize="16dp"
             android:inputType="textPersonName"
+            android:background="@drawable/layout_bg_gray"
             />
 
         <Button
@@ -49,6 +51,7 @@
             android:layout_height="30dp"
             android:layout_weight="1"
             android:background="@drawable/send_message"
+            android:layout_marginLeft="10dp"
             />
     </LinearLayout>
 

@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.kazzinc.checklist.MenuActivity;
 import com.kazzinc.checklist.R;
 import com.kazzinc.checklist.SqlLiteDatabase;
 
@@ -34,7 +35,7 @@ public class ChatDialog extends AppCompatActivity {
 
     private String userName = "";
     private int chatUserTabNum;
-    private int chatStatus;
+    //private int chatStatus;
 
 
     @Override
@@ -60,7 +61,7 @@ public class ChatDialog extends AppCompatActivity {
         try {
             userName = arguments.get("userName").toString();
             chatUserTabNum = Integer.parseInt(String.valueOf(arguments.get("chatUserTabNum")));
-            chatStatus = Integer.parseInt(String.valueOf(arguments.get("chatStatus")));
+            //chatStatus = Integer.parseInt(String.valueOf(arguments.get("chatStatus")));
 
             inboxMg(chatUserTabNum);
             SendMsg();
@@ -105,8 +106,8 @@ public class ChatDialog extends AppCompatActivity {
         int id = item.getItemId();
         switch(id){
             case android.R.id.home:
-                Intent intent = new Intent(getApplicationContext(), ChatMain.class);
-                finish();
+                Intent intent = new Intent(getApplication(), MenuActivity.class);
+                intent.putExtra("inputPage", "chat");
                 startActivity(intent);
                 return true;
         }
@@ -139,7 +140,10 @@ public class ChatDialog extends AppCompatActivity {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                    layoutParams.setMargins(0, 15, 0, 0);
+                    //layoutParams.gravity=Gravity.RIGHT;
+                    //llp.gravity=Gravity.RIGHT;
+
+                    layoutParams.setMargins(15, 15, 15, 0);
 
 
                     LinearLayout ll = new LinearLayout(this);
@@ -157,22 +161,20 @@ public class ChatDialog extends AppCompatActivity {
 
                     LinearLayout ll1 = new LinearLayout(this);
 
-                    ll1.addView(cw);
+                    LinearLayout.LayoutParams llp1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT,1f);
 
-
+                    //для входящих сообщений
                     if(cursor.getInt(5)==1){
-
-
+                        layoutParams.gravity=Gravity.LEFT;
                         cw.setBackgroundResource(R.drawable.layout_bg_gray);
-//                        cw.setForegroundGravity(Gravity.LEFT);
+                        //для исходящих сообщений
                     }else if(cursor.getInt(5)==2){
                         cw.setBackgroundResource(R.drawable.layout_bg_blue);
-
-
-                        //ll1.setGravity(Gravity.RIGHT);
-                        //cw.setForegroundGravity(Gravity.RIGHT);
+                        layoutParams.gravity=Gravity.RIGHT;
                     }
 
+                    ll1.addView(cw, llp1);
 
                     llCont.addView(ll1,layoutParams);
 
@@ -247,6 +249,19 @@ public class ChatDialog extends AppCompatActivity {
         Button btnSendMsg = findViewById(R.id.btnSendMsg);
         ScrollView svCont = findViewById(R.id.svCont);
 
+        etSendMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScrollView svCont = findViewById(R.id.svCont);
+
+                svCont.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        svCont.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+                });
+            }
+        });
 
         btnSendMsg.setOnClickListener(new View.OnClickListener() {
             @Override
