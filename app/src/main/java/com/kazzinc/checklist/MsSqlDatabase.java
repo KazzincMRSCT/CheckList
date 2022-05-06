@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kazzinc.checklist.Model.ChatModel;
 import com.kazzinc.checklist.Model.EmlpECPKey;
 import com.kazzinc.checklist.Model.Equipment;
 import com.kazzinc.checklist.Model.GSM;
@@ -293,6 +294,33 @@ public class MsSqlDatabase {
             result=true;
 
         writeLog("updateTask"+ "\t" + "TASK_ID:"+TASK_ID+";TASK_SIGN_ID="+TASK_SIGN_ID+ "\t" + "Результат: " + result);
+
+        return result;
+    }
+
+    public boolean insertChatMsg(int UserTNFrom, String UserNameFrom, int UserTNTo, String UserNameTo, String DateTime, String Message) throws IOException {
+        Gson gson = new Gson();
+        String methodURL = "InsertChatMessage";
+        boolean result=false;
+        String resultJson="";
+
+        try {
+            ContentValues params = new ContentValues();
+            params.put("CHAT_USER_TN_FROM", UserTNFrom);
+            params.put("CHAT_USER_NAME_FROM", UserNameFrom);
+            params.put("CHAT_USER_TN_TO", UserTNTo);
+            params.put("CHAT_USER_NAME_TO", UserNameTo);
+            params.put("CHAT_DATETIME", DateTime);
+            params.put("CHAT_MESSAGE", Message);
+
+            resultJson = httpRequestUtility.RequestToServer(serverURL + methodURL, "GET", params);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (resultJson.replace('"', '1').equals("1true1"))
+            result=true;
 
         return result;
     }
@@ -630,6 +658,23 @@ public class MsSqlDatabase {
             List<EmlpECPKey> ecpEmplIds = gson.fromJson(resultJson, new TypeToken<List<EmlpECPKey>>() {}.getType());
             return ecpEmplIds;
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //Получить сообщения для чата
+    public List<ChatModel> GetChatMessage(int TabNum) {
+        Gson gson = new Gson();
+        String methodURL = "GetChatMessage?TabNum="+TabNum;
+        Log.d("Alexey", "SyncService1 (timer GetChatMessage 4422) " + TabNum);
+        String resultJson = "";
+        try {
+            resultJson = httpRequestUtility.RequestToServer(serverURL + methodURL, "GET", null);
+            List<ChatModel> msgList = gson.fromJson(resultJson, new TypeToken<List<ChatModel>>() {}.getType());
+            return msgList;
+        } catch (IOException e) {
+            Log.d("Alexey", "SyncService1 (timer GetChatMessage 42) " + e.getMessage());
             e.printStackTrace();
         }
         return null;

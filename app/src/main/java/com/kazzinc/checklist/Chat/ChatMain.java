@@ -44,21 +44,27 @@ public class ChatMain extends AppCompatActivity {
         LinearLayout rContainer = (LinearLayout) findViewById(R.id.llCont);
 
 
+        Log.d("Alexey", "ChatTest -10 ");
+
         try {
             String selectQuery,selectQuery1;
 
             sqlLiteDatabase.open(this);
-            selectQuery = "SELECT DISTINCT UserTabNum FROM Chat";
+
+            selectQuery = "SELECT DISTINCT  UserTNFrom as Contact From Chat WHERE UserTNFrom<>" + getTubNum() + " UNION SELECT DISTINCT UserTNTo as Contact From Chat WHERE UserTNTo<>" + getTubNum();
+
+            Log.d("Alexey", "ChatTest 0 " + selectQuery);
 
             Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
-
 
             if (cursor.moveToFirst()) {
                 do {
 
-                    selectQuery1 = "SELECT UserTabNum, UserName,DateTime, Message, Status From Chat WHERE UserTabNum=" + cursor.getInt(0) +" ORDER BY DateTime DESC LIMIT 1";
+                    int tabNum = cursor.getInt(0);
 
-                    Log.d("Alexey", "12345 создан " + selectQuery1);
+                    selectQuery1 = "SELECT UserTNFrom, UserNameFrom, UserTNTo, UserNameTo, DateTime, Message, Status From Chat WHERE UserTNFrom=" + tabNum + " union SELECT UserTNFrom, UserNameFrom, UserTNTo, UserNameTo, DateTime, Message, Status From Chat WHERE UserTNTo=" + tabNum + " ORDER BY DateTime DESC LIMIT 1";
+
+                    Log.d("Alexey", "ChatTest 1 " + selectQuery1);
 
                     Cursor cursor1 = sqlLiteDatabase.database.rawQuery(selectQuery1, null);
 
@@ -67,16 +73,31 @@ public class ChatMain extends AppCompatActivity {
 
                             //int chatId = cursor.getInt(0);
 
-                            int chatUserTabNum = cursor1.getInt(0);
+                            String chatUserTabNum1 = cursor1.getString(0);
+                            String chatUserTabNum2 = cursor1.getString(2);
+                            String chatUserTabNum;
 
-                            String chatUserName = cursor1.getString(1);
+                            if (chatUserTabNum1.equals(getTubNum()))
+                                chatUserTabNum = chatUserTabNum2;
+                            else
+                                chatUserTabNum = chatUserTabNum1;
 
-                            String chatDateTime = cursor1.getString(2);
+                            String chatUserName1 = cursor1.getString(1);
 
-                            String chatMsg = cursor1.getString(3);
+                            String chatUserName2 = cursor1.getString(3);
 
-                            int chatStatus = cursor1.getInt(4);
+                            String chatUserName;
 
+                            String chatDateTime = cursor1.getString(4);
+
+                            String chatMsg = cursor1.getString(5);
+
+                            int chatStatus = cursor1.getInt(6);
+
+                            if (chatUserName1.equals(UserName))
+                                chatUserName = chatUserName2;
+                            else
+                                chatUserName = chatUserName1;
 
                             final CardView cw = new CardView(this);
                             LinearLayout linearLayout2 = new LinearLayout(this);
@@ -116,7 +137,7 @@ public class ChatMain extends AppCompatActivity {
                             layoutParams.setMargins(0, 10, 0, 0);
 
                             TextView tvName = new TextView(this);
-                            tvName.setText(Html.fromHtml("<font color='#E1E2E5'> " + chatUserName + "</font>"), TextView.BufferType.SPANNABLE);
+                            tvName.setText(Html.fromHtml("<font color='#E1E2E5'>"+ chatUserName +"</font>"), TextView.BufferType.SPANNABLE);
                             tvName.setTypeface(ResourcesCompat.getFont(this, R.font.exo_2_light));
                             tvName.setTextSize(21);
                             tvName.setLayoutParams(layoutParamsTV);
@@ -147,7 +168,6 @@ public class ChatMain extends AppCompatActivity {
                 } while (cursor.moveToNext());
             }
 
-
             sqlLiteDatabase.close();
         } catch (Exception e) {
             Log.d("Alexey", e.getMessage());
@@ -161,6 +181,27 @@ public class ChatMain extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private String getTubNum(){
+        try {
+            sqlLiteDatabase.open(getApplicationContext());
+
+            String selectQuery1 = "SELECT * FROM VpnConnection WhERE Id=2";
+
+            //String selectQuery = "SELECT * FROM Chat WhERE UserTabNum="+chatUserTabNum;
+            Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery1, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    Log.d("Alexey", "LoginActivity8765434 "+cursor.getString(1));
+                    return cursor.getString(1);
+                } while (cursor.moveToNext());
+            }
+            sqlLiteDatabase.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
 

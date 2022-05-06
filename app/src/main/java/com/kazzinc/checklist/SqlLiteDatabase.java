@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.kazzinc.checklist.Chat.ChatMain;
 import com.kazzinc.checklist.Model.Answer;
 import com.kazzinc.checklist.Model.ChatModel;
 import com.kazzinc.checklist.Model.EmlpECPKey;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SqlLiteDatabase extends SQLiteOpenHelper {
@@ -989,6 +991,16 @@ public class SqlLiteDatabase extends SQLiteOpenHelper {
         database.update("TaskEmployee", values, "TaskEmplId='" + taskEmployee.getEmployeeId() + "'", null);
     }
 
+    public void updateChatMsg(ChatModel chatModel) throws Exception {
+        ContentValues values = new ContentValues();
+
+        values.put("IsSendToServer", 1);
+
+        Log.d("Alexey", "Chat123 424: " + chatModel.getDateTime());
+
+        database.update("Chat", values, "DateTime='" + chatModel.getDateTime().replace("T"," ") + "'", null);
+    }
+
 
     public void updateWorkPlaceList(List<WorkPlace> workPlaceList) {
         List<WorkPlace> existedWorkPlaces = getWorkPlaceList();
@@ -1342,18 +1354,90 @@ public class SqlLiteDatabase extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
+//////////////////////////////////////
 
-
-    public void insertChat(ChatModel chatModel) {
+    public void insertChatMsg(ChatModel chatModel) {
         ContentValues values = new ContentValues();
-        values.put("UserTabNum",chatModel.getUserTabNum());
-        values.put("UserName", chatModel.getUserName());
-        values.put("DateTime", chatModel.getDateTime());
+        values.put("UserTNFrom", chatModel.getUserTNFrom());
+        values.put("UserNameFrom", chatModel.getUserNameFrom());
+        values.put("UserTNTo", chatModel.getUserTNTo());
+        values.put("UserNameTo", chatModel.getUserNameTo());
+
+        values.put("DateTime", chatModel.getDateTime().replace("T"," "));
         values.put("Message", chatModel.getMessage());
         values.put("Status", chatModel.getStatus());
         values.put("Deleted", chatModel.getDeleted());
+        values.put("IsSendToServer", 1);
 
         database.insert("Chat", null, values);
+    }
+
+    public ArrayList<ChatModel> getChatModel() {
+        ArrayList<ChatModel> ChatMsgList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM Chat";
+
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int UserTNFrom = cursor.getInt(1);
+                String UserNameFrom = cursor.getString(2);
+                int UserTNTo = cursor.getInt(3);
+                String UserNameTo = cursor.getString(4);
+
+                String DateTime = cursor.getString(5);
+                String Message = cursor.getString(6);
+                int Status = cursor.getInt(7);
+                int Deleted = cursor.getInt(8);
+
+                //Notification notification = new Notification(NotifyId, NotifyText, NotifyDate, NotifyType);
+
+                ChatModel chatModel = new ChatModel(UserTNFrom, UserNameFrom,UserTNTo,UserNameTo, DateTime, Message, Status, Deleted);
+
+                ChatMsgList.add(chatModel);
+            } while (cursor.moveToNext());
+        }
+        return ChatMsgList;
+    }
+
+    public void updateChatMsg(List<ChatModel> chatMsgList) {
+        try {
+            Log.d("Alexey", "Chat123 1");
+            List<ChatModel> chatMsgArray = getChatModel();
+            Log.d("Alexey", "Chat123 2");
+            for (int i = 0; i < chatMsgList.size(); ++i) {
+                boolean inserting = true;
+                for (int j = 0; j < chatMsgArray.size(); ++j) {
+                    Log.d("Alexey", "Chat123 3: " + chatMsgArray.get(j).getDateTime().replace("T"," ") + " | " + chatMsgList.get(i).getDateTime().replace("T"," "));
+                    if (chatMsgArray.get(j).getDateTime().replace("T"," ").equals(chatMsgList.get(i).getDateTime().replace("T"," "))) {
+
+                        inserting = false;
+
+                        Log.d("Alexey", "Chat123 4: " + inserting);
+                        break;
+                    }
+                }
+
+                if (inserting) {
+                    try {
+                        insertChatMsg(chatMsgList.get(i));
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        Log.d("Alexey", "Chat123 423: " + inserting);
+
+                        updateChatMsg(chatMsgList.get(i));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /////////////////

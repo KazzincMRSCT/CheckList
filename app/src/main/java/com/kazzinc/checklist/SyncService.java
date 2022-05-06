@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.kazzinc.checklist.ActivityForNotification.OnVPNTOReboot;
 import com.kazzinc.checklist.Model.Answer;
+import com.kazzinc.checklist.Model.ChatModel;
 import com.kazzinc.checklist.Model.Task;
 import com.kazzinc.checklist.Model.TaskDetail;
 import com.kazzinc.checklist.Model.TaskDetailModify;
@@ -110,9 +111,17 @@ public class SyncService extends Service {
 
     void doTask()
     {
-        timerHandler.postDelayed(timerRunnable, 0);
-        timerHandler.postDelayed(timerSendToServer, 15000);
-        timerHandler.postDelayed(timerCheckModify, 5000);
+        try {
+            timerHandler.postDelayed(timerRunnable, 0);
+            timerHandler.postDelayed(timerSendToServer, 15000);
+            timerHandler.postDelayed(timerCheckModify, 5000);
+            Log.d("Alexey", "SyncService1 (timer GetChatMessage -2)");
+            timerHandler.postDelayed(timerChatMessage, 0);
+        } catch (Exception e) {
+            Log.d("Alexey", "SyncService1 (Global Error): " + e.getMessage());
+
+        }
+
     }
 
     Runnable timerSendToServer = new Runnable()
@@ -129,6 +138,25 @@ public class SyncService extends Service {
                 Log.d("Alexey", "Ошибка загрузки " + e.getMessage());
             }
             timerHandler.postDelayed(this, 15000);
+        }
+
+    };
+
+    Runnable timerChatMessage = new Runnable()
+    {
+        @Override public void run()
+        {
+
+            Log.d("Alexey", "SyncService1 (timer GetChatMessage 0)");
+
+            try {
+                Log.d("Alexey", "SyncService1 (timer GetChatMessage -1)");
+                (new GetChatMessage(SyncService.this)).execute();
+            }
+            catch (Exception e)
+            {
+            }
+            timerHandler.postDelayed(this, 5000);
         }
 
     };
@@ -564,6 +592,93 @@ public class SyncService extends Service {
         }
     }
 
+    class GetChatMessage extends AsyncTask<Void, Void, Boolean> {
+        private Context mContext;
+
+        public GetChatMessage(Context context){
+
+            this.mContext = context;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            Log.d("Alexey", "SyncService1 (timer GetChatMessage 1)");
+
+            if(msSqlDatabase.checkConnection()) {
+                try {
+
+                    sqlLiteDatabase.open(getApplicationContext());
+
+                    Long longn = SystemClock.elapsedRealtime();
+                    String selectQuery = "SELECT * FROM Chat WHERE IsSendToServer IS NULL";
+                    Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
+
+                    boolean result=false;
+                    if (cursor.moveToFirst()) {
+                        do {
+                            int UserTNFrom = cursor.getInt(1);
+                            String UserNameFrom = cursor.getString(2);
+                            int UserTNTo = cursor.getInt(3);
+                            String UserNameTo = cursor.getString(4);
+                            String DateTime = cursor.getString(5);
+                            String Message = cursor.getString(6);
+
+                            result = msSqlDatabase.insertChatMsg(UserTNFrom, UserNameFrom, UserTNTo, UserNameTo, DateTime, Message);
+
+                            Log.d("Alexey", "SyncService1 (insertChatMsg): " + UserTNFrom + "," + UserNameFrom + "," + UserTNTo + "," + UserNameTo + "," + DateTime + "," + Message);
+
+                        } while (cursor.moveToNext());
+                    }
+
+                    Log.d("Alexey", "SyncService1 (timer GetChatMessage 2)");
+
+                    ArrayList<ChatModel> msgList = (ArrayList<ChatModel>) msSqlDatabase.GetChatMessage(Integer.parseInt(getTubNum()));
+
+                    Log.d("Alexey", "SyncService1 (timer GetChatMessage 3)");
+
+                    sqlLiteDatabase.updateChatMsg(msgList);
+
+                    Log.d("Alexey", "SyncService1 (timer GetChatMessage 4)");
+
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
+                finally {
+                    sqlLiteDatabase.close();
+                }
+            }
+
+            return true;
+        }
+
+        protected void onPostExecute(boolean preverse){
+        }
+    }
+
+    private String getTubNum(){
+        try {
+            sqlLiteDatabase.open(getApplicationContext());
+
+            String selectQuery1 = "SELECT * FROM VpnConnection WhERE Id=2";
+
+            //String selectQuery = "SELECT * FROM Chat WhERE UserTabNum="+chatUserTabNum;
+            Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery1, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    Log.d("Alexey", "LoginActivity8765434 "+cursor.getString(1));
+                    return cursor.getString(1);
+                } while (cursor.moveToNext());
+            }
+            sqlLiteDatabase.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     private String loadGsmEq() {
         sPref = getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
         return sPref.getString("GSMEq", "");
@@ -678,6 +793,14 @@ public class SyncService extends Service {
                 setVpnConnection();
             } catch (NumberFormatException e) {
 
+            }
+
+            try
+            {
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             try {

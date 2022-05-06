@@ -1,6 +1,7 @@
 package com.kazzinc.checklist.Chat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,6 +23,11 @@ import com.kazzinc.checklist.SqlLiteDatabase;
 
 public class ChatNewDialog extends AppCompatActivity {
 
+    SharedPreferences sPref;
+    String UserId;
+    String UserRole;
+    String UserName;
+
     private SqlLiteDatabase sqlLiteDatabase = new SqlLiteDatabase(this);
 
     @Override
@@ -40,7 +46,8 @@ public class ChatNewDialog extends AppCompatActivity {
             String selectQuery;
 
             sqlLiteDatabase.open(this);
-            selectQuery = "SELECT TaskEmplName, TaskEmplPassword, TaskEmplAreaId From TaskEmployee LIMIT 50";
+            //selectQuery = "SELECT UserTNFrom, UserNameFrom, UserTNTo, UserNameTo, DateTime, Message, Status From Chat WHERE UserNameFROM='" + UserName + "' union all SELECT UserTNTo, UserNameTo,UserTNFrom, UserNameFrom, DateTime, Message, Status From Chat WHERE UserNameTo='" + UserName + "'";
+            selectQuery = "SELECT TaskEmplName, TaskEmplPassword, TaskEmplAreaId From TaskEmployee ORDER BY TaskEmplName LIMIT 200 ";
             //selectQuery = "SELECT * FROM Chat";
 
             Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
@@ -133,7 +140,14 @@ public class ChatNewDialog extends AppCompatActivity {
             Log.d("Alexey",e.getMessage());
         }
 
+    }
 
+    private void loadUserInfo()
+    {
+        sPref = getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
+        UserId = sPref.getString("UserId","");
+        UserName = sPref.getString("UserName","");
+        UserRole = sPref.getString("UserRole","");
     }
 
     @Override

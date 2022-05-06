@@ -2,39 +2,57 @@ package com.kazzinc.checklist.Model;
 
 public class ChatModel {
 
-    private int UserTabNum;
-    private String UserName;
+    private int UserTNFrom;
+    private String UserNameFrom;
+    private int UserTNTo;
+    private String UserNameTo;
     private String DateTime;
     private String Message;
     private int Status;
     private int Deleted;
 
-    public ChatModel(int userTabNum, String userName, String dateTime, String message, int status, int deleted) {
-        UserTabNum = userTabNum;
-        UserName = userName;
+
+    public ChatModel(int userTNFrom, String userNameFrom, int userTNTo, String userNameTo, String dateTime, String message, int status, int deleted) {
+        UserTNFrom = userTNFrom;
+        UserNameFrom = userNameFrom;
+        UserTNTo = userTNTo;
+        UserNameTo = userNameTo;
         DateTime = dateTime;
         Message = message;
         Status = status;
         Deleted = deleted;
     }
 
-    public ChatModel() {
+    public int getUserTNFrom() {
+        return UserTNFrom;
     }
 
-    public int getUserTabNum() {
-        return UserTabNum;
+    public void setUserTNFrom(int userTNFrom) {
+        UserTNFrom = userTNFrom;
     }
 
-    public void setUserTabNum(int userTabNum) {
-        UserTabNum = userTabNum;
+    public String getUserNameFrom() {
+        return UserNameFrom;
     }
 
-    public String getUserName() {
-        return UserName;
+    public void setUserNameFrom(String userNameFrom) {
+        UserNameFrom = userNameFrom;
     }
 
-    public void setUserName(String userName) {
-        UserName = userName;
+    public int getUserTNTo() {
+        return UserTNTo;
+    }
+
+    public void setUserTNTo(int userTNTo) {
+        UserTNTo = userTNTo;
+    }
+
+    public String getUserNameTo() {
+        return UserNameTo;
+    }
+
+    public void setUserNameTo(String userNameTo) {
+        UserNameTo = userNameTo;
     }
 
     public String getDateTime() {
