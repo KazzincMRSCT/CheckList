@@ -1,5 +1,6 @@
 package com.kazzinc.checklist;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -49,6 +51,18 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //проверка работы сервиса
+        boolean result= isMyServiceRunning(SyncService.class);
+
+        if (!result)
+        {
+            Intent serviceIntent = new Intent(this, SyncService.class);
+            serviceIntent.putExtra("inputExtra", "Служба синхронизации данных");
+
+            ContextCompat.startForegroundService(this, serviceIntent);
+        }
+
         setContentView(R.layout.activity_menu);
         scrollView = findViewById(R.id.sclollView);
         bottomNavigationView = findViewById(R.id.bottomMenu);
@@ -93,6 +107,16 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
             bottomNavigationView.getMenu().removeItem(R.id.task);
             bottomNavigationView.setSelectedItemId(R.id.checkList);
         }
+    }
+
+    public boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void hideBottomNavigationItem(int id, BottomNavigationView view) {

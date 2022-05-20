@@ -12,8 +12,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -148,16 +150,19 @@ public class TaskFragment extends Fragment {
         final Button btnRisk = (Button) getView().findViewById(R.id.btnRisk);
         final Button btnSafety = (Button) getView().findViewById(R.id.btnSafety);
         final Button btnInstruction = (Button) getView().findViewById(R.id.btnInstruction);
+        final Button btnMark = (Button) getView().findViewById(R.id.btnMark);
 
         if (taskId>0)
         {
             btnRisk.setVisibility(View.VISIBLE);
             btnSafety.setVisibility(View.VISIBLE);
             btnInstruction.setVisibility(View.VISIBLE);
+            btnMark.setVisibility(View.VISIBLE);
         } else {
             btnRisk.setVisibility(View.GONE);
             btnSafety.setVisibility(View.GONE);
             btnInstruction.setVisibility(View.GONE);
+            btnMark.setVisibility(View.GONE);
         }
 
         View.OnClickListener handler = new View.OnClickListener() {
@@ -185,6 +190,19 @@ public class TaskFragment extends Fragment {
 
                         intent.putExtra("Title", "Инструкции");
                         startActivity(intent);
+
+                        break;
+
+                    case R.id.btnMark:
+
+//                        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI.buildUpon().appendPath("/storage/emulated/0/me1.jpg").build();
+//                        startActivity(new Intent(Intent.ACTION_VIEW, uri));
+
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.parse("/storage/emulated/0/me1.jpg"), "image/*");
+                        startActivity(intent);
+
+//                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("content://media/external/images/media/16"))); /** replace with your own uri */
 
                         break;
 

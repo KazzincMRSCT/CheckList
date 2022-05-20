@@ -409,6 +409,7 @@ public class SyncService extends Service {
                             String AnswerWorkPlaceName = cursor.getString(7);
                             String AnswerDateTime = cursor.getString(8);
                             String AnswerPhotos = cursor.getString(9);
+
                             msSqlDatabase.updateAnswer(AnswerUserId,AnswerQuesId,AnswerText,AnswerDate,AnswerShift,AnswerComment, AnswerWorkPlaceName, AnswerDateTime, AnswerPhotos);
 
                             try {
@@ -472,7 +473,7 @@ public class SyncService extends Service {
 
             Log.d("Alexey", "getNitification step 8");
 
-            if(msSqlDatabase.checkConnection()) {//Загрузк данных по ГСМ с сервера
+            if(msSqlDatabase.checkConnection()) {//Загрузка данных по ГСМ с сервера
 
                 try{
                     if (eq.length()>0) {
@@ -879,6 +880,7 @@ public class SyncService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+//        Toast.makeText(this, "Service stopped...", Toast.LENGTH_SHORT).show();
     }
 
     //автоматическое обновление после прохождения
@@ -1367,17 +1369,29 @@ public class SyncService extends Service {
         if(msSqlDatabase.checkConnection()){
             try {
                 sqlLiteDatabase.open(this);
-                String selectQuery = "SELECT  * FROM Answer";
+                String selectQuery = "SELECT  * FROM Answer WHERE IsSendPhotoToServer ISNULL OR IsSendPhotoToServer<>1";
                 Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
 
                 if (cursor.moveToFirst()) {
                     do {
+                        int AnswerId = cursor.getInt(0);
                         String AnswerPhotos = cursor.getString(9);
                         if (AnswerPhotos != null && !AnswerPhotos.isEmpty()) {
                             String[] items = AnswerPhotos.split(";");
                             for (String item : items) {
                                 //UploadFile(path + item);
                                 UploadFile(getExternalMediaDirs()[0] + "/" + item);
+                                Log.d("Alexey", "Файлы тест " + getExternalMediaDirs()[0] + "/" + item);
+                                try {
+                                    sqlLiteDatabase.open(getApplicationContext());
+                                    String updateQuery = "UPDATE Answer SET IsSendPhotoToServer=1 WHERE AnswerId='" + AnswerId + "'";
+                                    sqlLiteDatabase.database.execSQL(updateQuery);
+                                    sqlLiteDatabase.close();
+                                }
+                                catch (Exception e)
+                                {
+                                    Log.d("Alexey", "Ошибка: " + e.getMessage());
+                                }
                             }
                         }
                     } while (cursor.moveToNext());

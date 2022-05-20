@@ -19,6 +19,7 @@ public class NotifyActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Уведомление");
 
+        TextView tvKeyCaption = (TextView) findViewById(R.id.tvKeyCaption);
         TextView tvText = (TextView) findViewById(R.id.tvNotifyText);
         TextView tvDate = (TextView) findViewById(R.id.tvNotifyDate);
 
@@ -30,19 +31,20 @@ public class NotifyActivity extends AppCompatActivity {
 
         String Text ="";
         String Date = "";
+        String Type ="";
 
         if (cursor.moveToFirst()) {
             do {
                 Text = cursor.getString(1);
-                String Type = cursor.getString(4);
+                Type = cursor.getString(4);
                 Date = cursor.getString(2);
-
                 String updateQuery = "UPDATE Notification SET NotifyIsAlarm=1 WHERE NotifyId='" + cursor.getString(0) + "'";
                 sqlLiteDatabase.database.execSQL(updateQuery);
 
             } while (cursor.moveToNext());
         }
 
+        tvKeyCaption.setText(Type);
         tvDate.setText(Date);
         tvText.setText(Text.replace(";","\n\n"));
 

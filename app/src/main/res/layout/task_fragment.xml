@@ -117,6 +117,23 @@
                         android:textSize="16sp"
                         android:theme="@style/AppTheme.Button" />
 
+                    <Button
+                        android:id="@+id/btnMark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:height="60dp"
+                        android:clickable="true"
+                        android:drawableRight="@drawable/right16"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="left|center_vertical"
+                        android:hapticFeedbackEnabled="true"
+                        android:text="Марк. эскизы"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorDarkLight4"
+                        android:textSize="16sp"
+                        android:theme="@style/AppTheme.Button" />
+
                 </LinearLayout>
 
                 <LinearLayout

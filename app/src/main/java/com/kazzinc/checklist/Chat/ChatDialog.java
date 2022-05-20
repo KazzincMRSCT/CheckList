@@ -1,5 +1,7 @@
 package com.kazzinc.checklist.Chat;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -7,6 +9,7 @@ import android.database.SQLException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 import com.kazzinc.checklist.MenuActivity;
 import com.kazzinc.checklist.R;
 import com.kazzinc.checklist.SqlLiteDatabase;
+import com.kazzinc.checklist.SyncService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,8 +49,6 @@ public class ChatDialog extends AppCompatActivity {
     String UserRole;
     String UserName;
     //private int chatStatus;
-
-    Timer timer = new Timer();
 
     private int ErrorCount;
 
@@ -72,6 +74,16 @@ public class ChatDialog extends AppCompatActivity {
                     }
                 }
             });
+
+            boolean result= isMyServiceRunning(SyncService.class);
+
+            if (!result)
+            {
+                Intent serviceIntent = new Intent(this, SyncService.class);
+                serviceIntent.putExtra("inputExtra", "Служба синхронизации данных");
+
+                ContextCompat.startForegroundService(this, serviceIntent);
+            }
 
             loadUserInfo();
 
@@ -147,7 +159,7 @@ public class ChatDialog extends AppCompatActivity {
                 });
                 Log.d("Alexey", "Chat Dialog (Search Error End)");
 
-                timerHandler.postDelayed(this, 1000);
+                timerHandler.postDelayed(this, 2000);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d("Alexey", "Chat Dialog (Global Error): " + e.getMessage());
@@ -163,6 +175,7 @@ public class ChatDialog extends AppCompatActivity {
                 Intent intent = new Intent(getApplication(), MenuActivity.class);
                 intent.putExtra("inputPage", "chat");
                 startActivity(intent);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -237,7 +250,7 @@ public class ChatDialog extends AppCompatActivity {
                     Log.d("Alexey", "Chat Dialog (Search Error 34)");
                     Log.d("Sergey", "Sergey " + cursor.getString(4));
 
-                    cw.setBackgroundResource(R.drawable.layout_bg_gray);
+                    cw.setBackgroundResource(R.drawable.layout_bg_message);
 
                     if(cursor.getString(2).equals(UserName)){
                         cw.setBackgroundResource(R.drawable.layout_bg_blue);
@@ -252,7 +265,7 @@ public class ChatDialog extends AppCompatActivity {
 
                 } while (cursor.moveToNext());
             }
-            Log.d("Alexey", "Chat Dialog (Search Error 36)");
+            Log.d("Alexey", "Chat Dialog (Search Error 31)");
             sqlLiteDatabase.close();
             Log.d("Alexey", "Chat Dialog (Search Error 4)");
         } catch (Exception e) {
@@ -284,11 +297,32 @@ public class ChatDialog extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (etSendMsg.getText().toString().trim().length() > 0) {
+                    boolean result= isMyServiceRunning(SyncService.class);
+
+                    if (!result)
+                    {
+                        Intent serviceIntent = new Intent(ChatDialog.this, SyncService.class);
+                        serviceIntent.putExtra("inputExtra", "Служба синхронизации данных");
+
+                        ContextCompat.startForegroundService(ChatDialog.this, serviceIntent);
+                    }
+
                     setMsgChat(String.valueOf(etSendMsg.getText()), chatUserTabNum);
+
                     etSendMsg.getText().clear();
                 }
             }
         });
+    }
+
+    public boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String getTubNum(){
@@ -333,5 +367,11 @@ public class ChatDialog extends AppCompatActivity {
         UserId = sPref.getString("UserId","");
         UserName = sPref.getString("UserName","");
         UserRole = sPref.getString("UserRole","");
+    }
+
+    @Override
+    protected void onDestroy () {
+        timerHandler.removeCallbacksAndMessages(null);
+        super.onDestroy();
     }
 }

@@ -1,10 +1,13 @@
 package com.kazzinc.checklist.Chat;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 import com.kazzinc.checklist.MenuActivity;
 import com.kazzinc.checklist.R;
 import com.kazzinc.checklist.SqlLiteDatabase;
+import com.kazzinc.checklist.SyncService;
 
 public class ChatMain extends AppCompatActivity {
     private SqlLiteDatabase sqlLiteDatabase = new SqlLiteDatabase(this);
@@ -42,6 +46,17 @@ public class ChatMain extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LinearLayout rContainer = (LinearLayout) findViewById(R.id.llCont);
+
+
+        boolean result= isMyServiceRunning(SyncService.class);
+
+        if (!result)
+        {
+            Intent serviceIntent = new Intent(this, SyncService.class);
+            serviceIntent.putExtra("inputExtra", "Служба синхронизации данных");
+
+            ContextCompat.startForegroundService(this, serviceIntent);
+        }
 
 
         Log.d("Alexey", "ChatTest -10 ");
@@ -177,10 +192,29 @@ public class ChatMain extends AppCompatActivity {
         btnNewChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getApplicationContext(), ChatNewDialog.class);
                 startActivity(intent);
+//                Intent myService = new Intent(ChatMain.this, SyncService.class);
+//                stopService(myService);
+
+                //проверка работы сервиса
+
+
+                //Toast.makeText(ChatMain.this, "Service ... " + result, Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    public boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String getTubNum(){

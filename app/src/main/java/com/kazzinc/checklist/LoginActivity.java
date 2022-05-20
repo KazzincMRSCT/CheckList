@@ -155,7 +155,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         getSupportActionBar().hide();
 
-
         verifyStoragePeremissions(LoginActivity.this);
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_FINE_LOCATION},2);
@@ -250,23 +249,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.email_login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-//        Toast.makeText(getApplicationContext(), getWifi(), Toast.LENGTH_LONG).show();
-
-
-        if(vpnActive(this)){
-            new SyncService().setVpnConnection(this,1);
-//            Toast.makeText(getApplicationContext(), "Vpn включен", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, OnVPNTOReboot.class);
-            startActivity(intent);
-        }else {
-            if(Integer.parseInt(String.valueOf(new SyncService().getVpnConnection(this,0)))< SystemClock.elapsedRealtime()&&Integer.parseInt(new SyncService().getVpnConnection(this,1))==1){
-                Intent intent = new Intent(getApplicationContext(), OnVPNTOReboot.class);
-                //Ключ для открытия активити по таймеру
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }else {
-                new SyncService().setVpnConnection(this,0);
-
+        if (msSqlDatabase.checkConnection()) {
+            try {
+                if (vpnActive(this)) {
+                    new SyncService().setVpnConnection(this, 1);
+                    Intent intent = new Intent(this, OnVPNTOReboot.class);
+                    startActivity(intent);
+                } else {
+                    if (Integer.parseInt(String.valueOf(new SyncService().getVpnConnection(this, 0))) < SystemClock.elapsedRealtime() && Integer.parseInt(new SyncService().getVpnConnection(this, 1)) == 1) {
+                        Intent intent = new Intent(getApplicationContext(), OnVPNTOReboot.class);
+                        //Ключ для открытия активити по таймеру
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    } else {
+                        new SyncService().setVpnConnection(this, 0);
+                    }
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
             }
         }
     }
