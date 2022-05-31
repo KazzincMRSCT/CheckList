@@ -144,18 +144,117 @@ public class SyncService extends Service {
 
     Runnable timerChatMessage = new Runnable()
     {
-        @Override public void run()
-        {
+        @Override public void run() {
 
             Log.d("Alexey", "SyncService1 (timer GetChatMessage 0)");
 
             try {
                 Log.d("Alexey", "SyncService1 (timer GetChatMessage -1)");
                 (new GetChatMessage(SyncService.this)).execute();
+            } catch (Exception e) {
             }
-            catch (Exception e)
-            {
+
+            Log.d("Alexey", "SyncService1 (timer GetChatMessage 01)");
+
+
+                try {
+                    Log.d("Alexey", "SyncService1 (timer GetChatMessage 02)");
+
+                    String selectQuery = "SELECT * FROM Chat WHERE IsAlarm ISNULL";
+                    Log.d("Alexey", "getNitification 222" + selectQuery);
+                    Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
+
+                    Log.d("Alexey", "SyncService1 (timer GetChatMessage 03)");
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Log.d("Alexey", "SyncService1 (timer GetChatMessage 04)");
+                            String From = cursor.getString(2);
+                            Log.d("Alexey", "getNitification 444 " + From);
+
+
+                            String updateQuery = "UPDATE Chat SET IsAlarm=1 WHERE Id='" + cursor.getString(0) + "'";
+                            sqlLiteDatabase.database.execSQL(updateQuery);
+
+                            try {
+                                Log.d("Alexey", "getNitification Определяем уведомление");
+
+                                Intent notificationIntent = new Intent(getApplicationContext(), NotifyActivity.class);
+                                notificationIntent.putExtra("inputPage", "gsm");
+                                PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                                        0, notificationIntent, 0);
+
+                /*Spannable sb = new SpannableString("Bold text");
+                sb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);*/
+
+                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                    Notification.Builder notificationBuilder =
+                                            new Notification.Builder(getApplicationContext(), CHANNEL1_ID)
+                                                    .setDefaults(Notification.DEFAULT_ALL)
+                                                    .setSmallIcon(R.drawable.notification)
+                                                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.alert25))
+                                                    .setContentTitle(Html.fromHtml(String.format(Locale.getDefault(), "<strong><h1>%s</h1></strong>", "НОВОЕ СООБЩЕНИЕ")))
+                                                    .setContentText(Html.fromHtml(String.format(Locale.getDefault(), "<font size=\"18\">%s</font>", From)))
+                                                    .setAutoCancel(true)
+                                                    .setColor(Color.RED)
+                                                    .setPriority(Notification.PRIORITY_MAX)
+                                                    /*.setStyle(new Notification.InboxStyle()
+                                                    .Inbox("Строка 1")
+                                                    .Inbox("Строка 1")
+                                                        .addLine("Строка 1")
+                                                        .addLine(sb)
+                                                        .setSummaryText("+3 more"))*/
+                                                    //.setPriority(1)// this is deprecated in API 26 but you can still use for below 26. check below update for 26 API
+                                                    //.setSound(defaultSoundUri)
+                                                    .setContentIntent(pendingIntent);
+
+                                    NotificationChannel notificationChannel = new NotificationChannel(CHANNEL1_ID, "Новое сообщение", NotificationManager.IMPORTANCE_HIGH);
+                                    // Configure the notification channel.
+                                    AudioAttributes att = new AudioAttributes.Builder()
+                                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                                            .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                                            .build();
+                                    notificationChannel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI, att);
+                                    notificationChannel.setDescription("");
+                                    notificationChannel.enableLights(true);
+                                    notificationChannel.setLightColor(Color.RED);
+                                    notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+                                    notificationChannel.enableVibration(true);
+
+                                    NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                                    notificationManager.createNotificationChannel(notificationChannel);
+
+                                    notificationManager.notify(0, notificationBuilder.build());
+
+                                } else {
+                                    NotificationCompat.Builder notificationBuilder =
+                                            new NotificationCompat.Builder(getApplicationContext())
+                                                    .setSmallIcon(R.mipmap.ic_launcher)
+                                                    .setContentTitle("ВНИМАНИЕ")
+                                                    .setContentText(From)
+                                                    .setAutoCancel(true)
+                                                    .setPriority(Notification.PRIORITY_MAX) // this is deprecated in API 26 but you can still use for below 26. check below update for 26 API
+                                                    .setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+                                    //.setContentIntent(pendingIntent);
+                                    NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                                    notificationManager.notify(0, notificationBuilder.build());
+                                }
+
+                                //startForeground(111, notification);
+
+                                Log.d("Alexey", "1Notif1 Показываем уведомление");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.d("Alexey", "1Notif1: ошибка " + e.getMessage());
+                                Log.d("Alexey", "1Notif1: ошибка " + e.getStackTrace());
+                            }
+
+
+                        } while (cursor.moveToNext());
+                    }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
             timerHandler.postDelayed(this, 5000);
         }
 
@@ -173,6 +272,8 @@ public class SyncService extends Service {
         @Override
         protected Boolean doInBackground(Void... params) {
 
+
+
             if(msSqlDatabase.checkConnection()) { //Получение уведомлений
                 try {
                     ArrayList<com.kazzinc.checklist.Model.Notification> notificationList = msSqlDatabase.GetNotification();
@@ -181,7 +282,7 @@ public class SyncService extends Service {
 
                     sqlLiteDatabase.updateNotification(notificationList);
 
-                    Log.d("Alexey", "getNitification 1");
+                    Log.d("Alexey", "getNitification 111");
 
                     String selectQuery = "SELECT * FROM Notification WHERE NotifyIsAlarm ISNULL";
                     Log.d("Alexey", "getNitification 2");
@@ -281,8 +382,6 @@ public class SyncService extends Service {
 
             }
 //            }
-
-
 
             Log.d("Alexey", "getNitification step 4");
 

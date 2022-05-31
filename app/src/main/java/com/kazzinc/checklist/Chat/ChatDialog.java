@@ -19,7 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -195,8 +197,11 @@ public class ChatDialog extends AppCompatActivity {
             selectQuery = "SELECT * FROM Chat WhERE UserTNFrom="+chatUserTabNum + " OR UserTNTo="+chatUserTabNum;
             //String selectQuery = "SELECT * FROM Chat WhERE UserTabNum="+chatUserTabNum;
             Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
+            cursor.getCount();
+            int i=0;
             if (cursor.moveToFirst()) {
                 do {
+                    i++;
                     Log.d("Alexey", "Chat Dialog (Search Error 31)");
                     final CardView cw = new CardView(this);
                     cw.setId(id);
@@ -230,6 +235,8 @@ public class ChatDialog extends AppCompatActivity {
 
                     cw.addView(ll);
 
+
+
                     Log.d("Alexey", "Chat Dialog (Search Error 33)");
 
                     LinearLayout ll1 = new LinearLayout(this);
@@ -255,6 +262,33 @@ public class ChatDialog extends AppCompatActivity {
                     if(cursor.getString(2).equals(UserName)){
                         cw.setBackgroundResource(R.drawable.layout_bg_blue);
                         layoutParams.gravity=Gravity.RIGHT;
+
+                        /////////////////
+                        //ImageView Setup
+                        ImageView imageView = new ImageView(this);
+
+                        //setting image resource
+                        if (cursor.getCount()==i)
+                            imageView.setImageResource(R.drawable.tick);
+                        else
+                            imageView.setImageResource(R.drawable.read_tick);
+                        //imageView.getLayoutParams().height = 24;
+
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
+                                ((int) LinearLayout.LayoutParams.MATCH_PARENT, (int) RelativeLayout.LayoutParams.MATCH_PARENT);
+
+                        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+                        imageView.setLayoutParams(params);
+
+                        imageView.setPadding(0,0,10,0);
+
+                        //setting image position
+                    /*imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT));*/
+
+                        ll1.addView(imageView, llp1);
+                        /////////////////
                     }
 
                     ll1.addView(cw, llp1);
