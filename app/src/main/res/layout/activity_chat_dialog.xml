@@ -32,7 +32,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginRight="10dp"
         android:paddingTop="20dp"
         android:orientation="horizontal">
@@ -44,16 +44,18 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:orientation="horizontal"
-                android:background="#444446"
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp">
+
+                <Button
+                    android:layout_marginTop="-2dp"
+                    android:id="@+id/btnPlus"
+                    android:layout_width="20dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/paperclip" />
 
                 <EditText
                     android:id="@+id/etSendMsg"

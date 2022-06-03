@@ -118,13 +118,14 @@ public class ChatMain extends AppCompatActivity {
                             LinearLayout linearLayout2 = new LinearLayout(this);
                             cw.setCardBackgroundColor(Color.parseColor("#444446"));
 
+                            String finalChatMsg = chatMsg;
                             cw.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     Intent intent = new Intent(getApplicationContext(), ChatDialog.class);
                                     intent.putExtra("userName", chatUserName);
                                     intent.putExtra("chatUserTabNum", chatUserTabNum);
-                                    intent.putExtra("chatMsg", chatMsg);
+                                    intent.putExtra("chatMsg", finalChatMsg);
                                     intent.putExtra("chatStatus", chatStatus);
                                     finish();
                                     startActivity(intent);
@@ -168,6 +169,10 @@ public class ChatMain extends AppCompatActivity {
                             ll.addView(linearLayout2);
 
                             TextView tvEndMsg = new TextView(this);
+
+                            if (chatMsg.contains("img$"))
+                                chatMsg = "Фото";
+
                             tvEndMsg.setText(Html.fromHtml("<font color='#979797'> " + chatMsg + "</font>"), TextView.BufferType.SPANNABLE);
                             tvEndMsg.setTextSize(18);
 

@@ -7,8 +7,10 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -27,12 +29,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kazzinc.checklist.MenuActivity;
+import com.kazzinc.checklist.PhotoRealPath;
 import com.kazzinc.checklist.R;
 import com.kazzinc.checklist.SqlLiteDatabase;
 import com.kazzinc.checklist.SyncService;
+import com.kazzinc.checklist.improvement_step3;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -62,6 +68,28 @@ public class ChatDialog extends AppCompatActivity {
 
             EditText etSendMsg = findViewById(R.id.etSendMsg);
             Button btnSendMsg = findViewById(R.id.btnSendMsg);
+            Button btnPlus = findViewById(R.id.btnPlus);
+
+
+            //Открытие галереии
+            btnPlus.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+
+                    //Camera
+//                Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(Intent.createChooser(takePicture, "Select Picture"), 0);//zero can be replaced with any action code
+                    ///Photo
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    pickPhoto.setType("image/*");
+                    pickPhoto.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);//Выбор несколько фото (разрешение ставить более 1 чекпоинта)
+                    //pickPhoto.setAction(Intent.ACTION_GET_CONTENT);//установка стандарта выбора фото из ФМ
+                    startActivityForResult(Intent.createChooser(pickPhoto, "Выбор фото"), 1);//one can be replaced with any action code
+                }
+            });
+
 
             btnSendMsg.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -125,6 +153,29 @@ public class ChatDialog extends AppCompatActivity {
         }
 
 
+    }
+
+
+    //получение списка с uri путями
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        List<String> listURI = new ArrayList<>();
+
+        switch (requestCode) {
+            case 1:
+            case 0:
+                if (resultCode == RESULT_OK) {
+                    if (data.getClipData() != null) {
+                        for (int i = 0; i < data.getClipData().getItemCount(); i++) {
+                            Uri imageUri = data.getClipData().getItemAt(i).getUri();
+                            Log.d("Alexey", "Chat IMG : " + imageUri);
+                        }
+                    }
+
+                }
+        }
     }
 
 
@@ -225,17 +276,39 @@ public class ChatDialog extends AppCompatActivity {
                     LinearLayout ll = new LinearLayout(this);
                     ll.setLayoutParams(llp);
 
-                    TextView tv = new TextView(this);
-                    tv.setLayoutParams(llp);
-                    tv.setTextSize(20);
-                    tv.setTextColor(Color.parseColor("#E1E2E5"));
-                    tv.setText(cursor.getString(6));
+                    String msg = cursor.getString(6);
 
-                    ll.addView(tv);
+                    if (msg.contains("img$"))
+                    {
+                        ImageView imageView = new ImageView(this);
+                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        imageView.setImageURI(Uri.parse(msg.replace("img$","")));
+                        LinearLayout.LayoutParams lpiv = new LinearLayout.LayoutParams (400, 400);
+                        ll.addView(imageView, lpiv);
+
+                        imageView.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent();
+                                intent.setAction (Intent.ACTION_VIEW);
+                                intent.setDataAndType(Uri.parse(msg.replace("img$","")), "image/jpg");
+                                startActivity (intent);
+                            }
+
+                        });
+
+                    }
+                    else {
+                        TextView tv = new TextView(this);
+                        tv.setLayoutParams(llp);
+                        tv.setTextSize(20);
+                        tv.setTextColor(Color.parseColor("#E1E2E5"));
+                        tv.setText(cursor.getString(6));
+                        ll.addView(tv);
+                    }
 
                     cw.addView(ll);
-
-
 
                     Log.d("Alexey", "Chat Dialog (Search Error 33)");
 
@@ -297,8 +370,15 @@ public class ChatDialog extends AppCompatActivity {
                     Log.d("Alexey", "Chat Dialog (Search Error 35)");
                     id++;
 
+
+
+
                 } while (cursor.moveToNext());
             }
+
+            //тестовый вывод изображения
+
+
             Log.d("Alexey", "Chat Dialog (Search Error 31)");
             sqlLiteDatabase.close();
             Log.d("Alexey", "Chat Dialog (Search Error 4)");
