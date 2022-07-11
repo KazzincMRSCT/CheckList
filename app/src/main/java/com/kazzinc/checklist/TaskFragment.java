@@ -57,6 +57,7 @@ public class TaskFragment extends Fragment {
     private SqlLiteDatabase sqlLiteDatabase = new SqlLiteDatabase(getActivity());
 
     String UserId;
+    String IsLongShift;
     private String UserRole;
     SharedPreferences sPref;
     Handler timerHandler = new Handler();
@@ -922,6 +923,7 @@ public class TaskFragment extends Fragment {
         UserId = sPref.getString("UserId","");
         String userName = sPref.getString("UserName","");
         UserRole = sPref.getString("UserRole","");
+        IsLongShift = sPref.getString("GSMLongShift","0");
     }
 
     public static void expand(final TextView v, int duration, int targetHeight) {

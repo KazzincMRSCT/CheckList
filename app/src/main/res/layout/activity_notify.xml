@@ -1,29 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-tools:context=".NotifyActivity">
-
-<TextView
-    android:id="@+id/tvKeyCaption"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="30dp"
-    android:layout_marginBottom="10dp"
-    android:fontFamily="@font/exo_2_light"
-    android:text="Аварийное оповещение"
-    android:textAlignment="center"
-    android:textColor="@color/colorDarkLight4"
-    android:textSize="24sp" />
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_horizontal">
+    tools:context=".NotifyActivity">
+
+    <TextView
+        android:id="@+id/tvKeyCaption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/exo_2_light"
+        android:text="Аварийное оповещение"
+        android:textAlignment="center"
+        android:textColor="@color/colorDarkLight4"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/tvNotifyDate"
@@ -36,27 +30,43 @@ tools:context=".NotifyActivity">
         android:textColor="@color/colorDarkLight3"
         android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/tvNotifyText"
+    <ScrollView
+        android:id="@+id/svCont"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="50dp"
-        android:fontFamily="@font/cuprum"
-        android:textAlignment="center"
-        android:textColor="@color/colorDarkLight4"
-        android:textSize="24sp" />
+        android:layout_height="match_parent">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="20dp">
 
-<Button
-    android:id="@+id/btnNotifyClose"
-    android:layout_width="150dp"
-    android:layout_height="60dp"
-    android:layout_marginTop="15dp"
-    android:layout_gravity="center"
-    android:textColor="@color/colorDarkLight3"
-    android:background="@color/colorDarkLight1"
-    android:text="Закрыть" />
+            <TextView
+                android:id="@+id/tvNotifyText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="30dp"
+                android:fontFamily="@font/cuprum"
+                android:textAlignment="textStart"
+                android:textColor="@color/colorDarkLight4"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/btnNotifyClose"
+                android:layout_width="150dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@color/colorDarkLight1"
+                android:text="Закрыть"
+                android:textColor="@color/colorDarkLight3" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

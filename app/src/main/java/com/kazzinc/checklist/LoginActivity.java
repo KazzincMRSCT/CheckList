@@ -102,6 +102,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     SharedPreferences sPref;
     private ProgressDialog progressDialog;
     public static final int DIALOG_DOWLOAD_PROGRESS = 1;
+    String IsLongShift;
     String userRole;
     String userName;
     String Version = "";
@@ -161,6 +162,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         createLogFile();
         CheckKey();
+
+        loadIsLongShift();
 
         Shift = "1";
 
@@ -480,8 +483,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     sqlLiteDatabase.database.execSQL("delete from HelpInUseApps");
                     sqlLiteDatabase.database.execSQL("delete from EmlpECPKey");
 
-
-
                     sqlLiteDatabase.close();
 
                     if(msSqlDatabase.checkConnection()) {//Загрузк данных по видео обучению с сервера
@@ -523,12 +524,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         checkUpload =1;
                     }
 
-
                     //Загружаем информацию по ЭЦП
                     sqlLiteDatabase.open(getApplicationContext());
                     String UserId = sPref.getString("UserId","");
                     List<EmlpECPKey> emplEcp = msSqlDatabase.GetECPEmplId(UserId);
                     sqlLiteDatabase.updateemplEcp(emplEcp);
+
+
 
                     //загружаем информацию из СУЭНЗ в локальную бд
                     List<Task> task = msSqlDatabase.getTaskList(userId, userType, newFormattedDate);
@@ -547,6 +549,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     List<TaskDetailModify> taskDetailModify = msSqlDatabase.getTaskDetailModify(userId, newFormattedDate);
                     sqlLiteDatabase.open(LoginActivity.this);
                     sqlLiteDatabase.updateTaskModify(taskDetailModify);
+
 
                     //Информация для учета ГСМ
                     sqlLiteDatabase.open(getApplicationContext());
@@ -569,8 +572,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                     //загружаем информацию по GSM в локальную бд
                     String eq = Equipment;
-                    if (GSM == 1)
+                    String isLongShift = "0";
+                    if (GSM == 1) {
                         eq = "Заправщик";
+                        isLongShift = "1";
+                    }
 
                     Log.d("Alexey", "GSMвбазу: загрузка 1: " + Equipment + ",  " + eq);
 
@@ -586,7 +592,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                     sqlLiteDatabase.close();
 
-                    saveGSMData(GSM, Equipment, eq);
+                    saveGSMData(GSM, Equipment, eq, isLongShift);
                     //
                     //Передаем на сервер версию ПО и mac-адрес клиента
                     msSqlDatabase.updateVersion(userName, MacAdress, Version, newFormattedDate, Wifi, Phone);
@@ -1026,11 +1032,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return userLogin;
     }
 
-    private void saveGSMData(int GSM, String Equipment, String GSMEq) {
+    private void loadIsLongShift() {
+        sPref = getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
+        IsLongShift = sPref.getString("GSMLongShift","0");
+    }
+
+    private void saveGSMData(int GSM, String Equipment, String GSMEq, String isLongShift) {
         sPref = getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
         SharedPreferences.Editor ed = sPref.edit();
         ed.putString("GSMEquipment", Equipment);
         ed.putString("GSMEq", GSMEq);
+        ed.putString("GSMLongShift", isLongShift);
         ed.putInt("GSM", GSM);
         ed.commit();
         Log.d("Alexey", "GSMвбазу: saveGSMData: " + Equipment);

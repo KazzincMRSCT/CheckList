@@ -55,7 +55,11 @@
                     android:layout_height="24dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/paperclip" />
+                    android:background="@drawable/paperclip"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:hapticFeedbackEnabled="true"/>
 
                 <EditText
                     android:id="@+id/etSendMsg"

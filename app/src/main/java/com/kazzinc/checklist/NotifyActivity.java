@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -44,9 +45,10 @@ public class NotifyActivity extends AppCompatActivity {
             } while (cursor.moveToNext());
         }
 
+        String text = "<div style='text-align:center;'>ВНИМАНИЕ!!!</div>" + Text.replace(";","<br><br>").replace("#","<br><br><div style='text-align:center;'>ЗАПАСНЫЕ ВЫХОДЫ:</div>");
         tvKeyCaption.setText(Type);
         tvDate.setText(Date);
-        tvText.setText(Text.replace(";","\n\n"));
+        tvText.setText(Html.fromHtml(text));
 
         Button btnClose = (Button) findViewById(R.id.btnNotifyClose);
         btnClose.setOnClickListener(new View.OnClickListener() {

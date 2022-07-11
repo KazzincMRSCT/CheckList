@@ -13,6 +13,7 @@ import android.database.SQLException;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioAttributes;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
@@ -41,6 +42,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -272,7 +275,15 @@ public class SyncService extends Service {
         @Override
         protected Boolean doInBackground(Void... params) {
 
+            Log.d("Alexey", "SendToServer Upload Chat: началось...");
+            Uri uri = Uri.parse("content://media/external/images/media/696");
+//            String sname = PhotoRealPath.getName(PhotoRealPath.getRealPathFromUri(getApplicationContext(), uri));
+            String sname = PhotoRealPath.getRealPathFromUri(getApplicationContext(), uri);
 
+            Log.d("Alexey", "SendToServer Upload Chat: " + sname);
+
+//            UploadFile(PhotoRealPath.getRealPathFromUri(getApplicationContext(), uri));
+            Log.d("Alexey", "Upload Chat: выполнено...");
 
             if(msSqlDatabase.checkConnection()) { //Получение уведомлений
                 try {
@@ -590,13 +601,10 @@ public class SyncService extends Service {
 
             }
 
-
-            Log.d("Alexey", "getNitification step 9");
-
             //Отправка уведомлений ГСМ
             sqlLiteDatabase.open(getApplicationContext());
 
-            String selectQuery = "SELECT COUNT(EquipOut) FROM GSM WHERE Confirmed=0";
+            String selectQuery = "SELECT COUNT(EquipOut) FROM GSM WHERE Confirmed=0 AND Deleted=0";
             Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
 
             int countNotify=0;
@@ -612,9 +620,9 @@ public class SyncService extends Service {
             SharedPreferences sPref = getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
             sPref.getInt("Notify",1);
 
-            if ((countNotify>0)&&(!eq.equals("Заправщик"))) {
+            if ((countNotify>0)&&(!eq.equals("Заправщик")&&(eq.length()>0))) {
                 try {
-                    Log.d("Alexey", "1Notif1 Определяем уведомление");
+                    Log.d("Alexey", "1Notif1 Заправщик " + eq);
 
                     Intent notificationIntent = new Intent(getApplicationContext(), MenuActivity.class);
                     notificationIntent.putExtra("inputPage", "gsm");
@@ -1505,6 +1513,7 @@ public class SyncService extends Service {
 
     private void UploadFile(String photoPath)
     {
+        Log.d("Alexey", "SyncService1 error: 0");
         File file;
 
         try {
@@ -1514,12 +1523,14 @@ public class SyncService extends Service {
             /**/
 
             file = new File(photoPath);
+            Log.d("Alexey", "SyncService1 error: 1"+file);
 
             RequestBody photoContent = RequestBody.create(MediaType.parse("multipart/from-data"), file);
 
             final MultipartBody.Part photo = MultipartBody.Part.createFormData("photo", file.getName(), photoContent);
 
             RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "Файл");
+
 
             Log.d("Alexey", "SyncService1 (timer SendToServer step Upload) path " + photoPath);
 
@@ -1535,18 +1546,20 @@ public class SyncService extends Service {
                     else
                     {
                         Toast.makeText(getApplicationContext(), "Проблема загрузки файла", Toast.LENGTH_LONG);
+                        Log.d("Alexey", "SyncService1 (timer SendToServer step Upload) проблема");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG);
+                    Log.d("Alexey", "SyncService1 (timer SendToServer step Upload) проблема1 " + t.getMessage());
                 }
             });
         }
         catch (Exception e)
         {
-            Log.d("Alexey", e.getMessage());
+            Log.d("Alexey", "SyncService1 error: " + e.getMessage());
         }
     }
 

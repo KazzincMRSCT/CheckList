@@ -1,11 +1,14 @@
 package com.kazzinc.checklist;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -86,6 +89,9 @@ public class improvement_step3 extends AppCompatActivity {
                             CompressedPhotoPath(PhotoRealPath.getRealPathFromUri(improvement_step3.this, imageUri));
                             //listURI.add(imageUri);
                             listURI.add(PhotoRealPath.getName(PhotoRealPath.getRealPathFromUri(improvement_step3.this, imageUri)));
+
+                            Log.d("Alexey", "SendToServer impruvment 1 " + imageUri);
+                            Log.d("Alexey", "SendToServer impruvment " +PhotoRealPath.getRealPathFromUri(improvement_step3.this, imageUri));
                         }
                         GetPhotos(listURI);
                     }

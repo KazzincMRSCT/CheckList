@@ -35,6 +35,7 @@ import com.kazzinc.checklist.SqlLiteDatabase;
 import com.kazzinc.checklist.SyncService;
 import com.kazzinc.checklist.improvement_step3;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,7 +97,7 @@ public class ChatDialog extends AppCompatActivity {
                 public void onClick(View v) {
 
                     if (etSendMsg.getText().toString().trim().length() > 0) {
-                        setMsgChat(String.valueOf(etSendMsg.getText()), chatUserTabNum);
+                        setMsgChat(String.valueOf(etSendMsg.getText()));
                         etSendMsg.getText().clear();
 
                         ScrollView svCont = findViewById(R.id.svCont);
@@ -170,10 +171,12 @@ public class ChatDialog extends AppCompatActivity {
                     if (data.getClipData() != null) {
                         for (int i = 0; i < data.getClipData().getItemCount(); i++) {
                             Uri imageUri = data.getClipData().getItemAt(i).getUri();
-                            Log.d("Alexey", "Chat IMG : " + imageUri);
+                            setMsgChat("img$" + imageUri);
+                            String fileName = new File(imageUri.getPath()).getName();
+                            //fileName = uri.pathSegments.last());
+//                            Log.d("Alexey", "Chat Dialog Name: " + fileName);
                         }
                     }
-
                 }
         }
     }
@@ -282,7 +285,10 @@ public class ChatDialog extends AppCompatActivity {
                     {
                         ImageView imageView = new ImageView(this);
                         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                        imageView.setImageURI(Uri.parse(msg.replace("img$","")));
+                        if (UserName.contains("Алипов"))
+                            imageView.setImageURI(Uri.parse("/storage/emulated/0/DCIM/Screenshots/Screenshot_20220603-073526_-.jpg"));
+                        else
+                            imageView.setImageURI(Uri.parse(msg.replace("img$","")));
                         LinearLayout.LayoutParams lpiv = new LinearLayout.LayoutParams (400, 400);
                         ll.addView(imageView, lpiv);
 
@@ -292,6 +298,7 @@ public class ChatDialog extends AppCompatActivity {
                             public void onClick(View v) {
                                 Intent intent = new Intent();
                                 intent.setAction (Intent.ACTION_VIEW);
+//                                intent.setDataAndType(Uri.parse(msg.replace("img$","")), "image/jpg");
                                 intent.setDataAndType(Uri.parse(msg.replace("img$","")), "image/jpg");
                                 startActivity (intent);
                             }
@@ -421,7 +428,7 @@ public class ChatDialog extends AppCompatActivity {
                         ContextCompat.startForegroundService(ChatDialog.this, serviceIntent);
                     }
 
-                    setMsgChat(String.valueOf(etSendMsg.getText()), chatUserTabNum);
+                    setMsgChat(String.valueOf(etSendMsg.getText()));
 
                     etSendMsg.getText().clear();
                 }
@@ -460,7 +467,7 @@ public class ChatDialog extends AppCompatActivity {
         return "";
     }
 
-    private void setMsgChat(String msg, int tubnum){
+    private void setMsgChat(String msg){
         try {
             LinearLayout linearLayout = findViewById(R.id.llCont);
             sqlLiteDatabase.open(this);

@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -476,10 +477,10 @@ public class GSMReffil extends AppCompatActivity {
                     if (getSave) {
                         sqlLiteDatabase.open(GSMReffil.this);
 
-                        Log.d("Alexey", "GetUserDate " + GetUserDate());
-                        Log.d("Alexey", "GetUserDate 1 " + dfDate.format(c));
+                        String[] array = GetUserDate().split("\\.");
+                        String dateShiftActual = array[2]+"-"+array[1]+"-"+array[0]+" 00:00:00";
 
-                        String insertQuery = "INSERT INTO GSM (DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, SendToServer, Confirmed, ReasonOil, T86) VALUES ('" + df.format(c) + "','" + dfDate.format(c) + "','" + GetUserShift() + "','" + equipOut + "','" + equipIn + "','" + GetUserName() + "','" + reasonDT + "','" + valueDT + "','" + valueSAE15W40 + "','" + valueSAE50 + "','" + valueSAE10W40 + "','" + value46 + "','0','0', '0','" + reasonOil + "','" + value86 +  "')";
+                        String insertQuery = "INSERT INTO GSM (DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, SendToServer, Confirmed, ReasonOil, T86) VALUES ('" + df.format(c) + "','" + dateShiftActual + "','" + GetUserShift() + "','" + equipOut + "','" + equipIn + "','" + GetUserName() + "','" + reasonDT + "','" + valueDT + "','" + valueSAE15W40 + "','" + valueSAE50 + "','" + valueSAE10W40 + "','" + value46 + "','0','0', '0','" + reasonOil + "','" + value86 +  "')";
                         //String insertQuery = "INSERT INTO GSM (DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, SendToServer) VALUES ('" + df.format(c) +"','"  + GetUserDate() +  "','" + GetUserShift() + "','" + equipOut + "','" + equipIn +"','" + GetUserName()  + "','','" + valueDT + "','" + valueSAE15W40 + "','" + valueSAE50 + "','" + valueSAE10W40+ "','" + value46 +"','0','0')";
 
                         sqlLiteDatabase.database.execSQL(insertQuery);
@@ -554,12 +555,19 @@ public class GSMReffil extends AppCompatActivity {
         SharedPreferences sPref = getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
         return sPref.getInt("UserShift",0);
     }
-    private String GetUserDate()
+    private String GetUserDateNewFormat()
     {
         sPref = getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
         String userDate = sPref.getString("UserDateNewFormat","");
         return userDate;
     }
+    private String GetUserDate()
+    {
+        sPref = getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
+        String userDate = sPref.getString("UserDate","");
+        return userDate;
+    }
+
 
     @Override
     public void onBackPressed()
