@@ -241,19 +241,19 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
         switch (selectedPage)
         {
             case "gsm":
-                //if (srt.equals("UTIMEC-4 (ТЗМ)") || srt.equals("UTIMEC-3 (ТЗМ)")) {
+                if (srt.equals("UTIMEC-4 (ТЗМ)") || srt.equals("UTIMEC-3 (ТЗМ)") && srt.length()>0) {
                     menu.getItem(0).setVisible(false);
                     menu.getItem(1).setVisible(true);
                     menu.getItem(2).setVisible(false);
                     menu.getItem(3).setVisible(false);
                     break;
-//                } else {
-//                    menu.getItem(0).setVisible(true);
-//                    menu.getItem(1).setVisible(false);
-//                    menu.getItem(2).setVisible(false);
-//                    menu.getItem(3).setVisible(false);
-//                    break;
-//                }
+                } else {
+                    menu.getItem(0).setVisible(true);
+                    menu.getItem(1).setVisible(false);
+                    menu.getItem(2).setVisible(false);
+                    menu.getItem(3).setVisible(false);
+                    break;
+                }
 
             case "rvd":
                 if (!srt.equals("")) {
