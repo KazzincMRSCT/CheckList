@@ -456,8 +456,10 @@ public class SqlLiteDatabase extends SQLiteOpenHelper {
                 int Deleted = cursor.getInt(12);
                 int SendToServer = cursor.getInt(13);
                 int Confirmed = cursor.getInt(14);
+                float DT2 = cursor.getFloat(17);
 
-                GSM gsmItem = new GSM(DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, SendToServer, Confirmed);
+
+                GSM gsmItem = new GSM(DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, SendToServer, Confirmed, DT2);
                 gsmList.add(gsmItem);
             } while (cursor.moveToNext());
         }

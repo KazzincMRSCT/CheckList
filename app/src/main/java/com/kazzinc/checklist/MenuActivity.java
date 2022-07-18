@@ -25,7 +25,6 @@ import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.kazzinc.checklist.ActivityForNotification.OnVPNTOReboot;
 import com.kazzinc.checklist.Chat.ChatMain;
 
 import java.util.ArrayList;
@@ -248,13 +247,13 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
                     menu.getItem(2).setVisible(false);
                     menu.getItem(3).setVisible(false);
                     break;
-                /*} else {
-                    menu.getItem(0).setVisible(true);
-                    menu.getItem(1).setVisible(false);
-                    menu.getItem(2).setVisible(false);
-                    menu.getItem(3).setVisible(false);
-                    break;
-                }*/
+//                } else {
+//                    menu.getItem(0).setVisible(true);
+//                    menu.getItem(1).setVisible(false);
+//                    menu.getItem(2).setVisible(false);
+//                    menu.getItem(3).setVisible(false);
+//                    break;
+//                }
 
             case "rvd":
                 if (!srt.equals("")) {

@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -480,7 +479,8 @@ public class GSMReffil extends AppCompatActivity {
                         String[] array = GetUserDate().split("\\.");
                         String dateShiftActual = array[2]+"-"+array[1]+"-"+array[0]+" 00:00:00";
 
-                        String insertQuery = "INSERT INTO GSM (DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, SendToServer, Confirmed, ReasonOil, T86) VALUES ('" + df.format(c) + "','" + dateShiftActual + "','" + GetUserShift() + "','" + equipOut + "','" + equipIn + "','" + GetUserName() + "','" + reasonDT + "','" + valueDT + "','" + valueSAE15W40 + "','" + valueSAE50 + "','" + valueSAE10W40 + "','" + value46 + "','0','0', '0','" + reasonOil + "','" + value86 +  "')";
+                        String insertQuery = "INSERT INTO GSM (DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, SendToServer, Confirmed, ReasonOil, T86) " +
+                                "VALUES ('" + df.format(c) + "','" + dateShiftActual + "','" + GetUserShift() + "','" + equipOut + "','" + equipIn + "','" + GetUserName() + "','" + reasonDT + "','" + valueDT + "','" + valueSAE15W40 + "','" + valueSAE50 + "','" + valueSAE10W40 + "','" + value46 + "','0','0', '0','" + reasonOil + "','" + value86 +  "')";
                         //String insertQuery = "INSERT INTO GSM (DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, SendToServer) VALUES ('" + df.format(c) +"','"  + GetUserDate() +  "','" + GetUserShift() + "','" + equipOut + "','" + equipIn +"','" + GetUserName()  + "','','" + valueDT + "','" + valueSAE15W40 + "','" + valueSAE50 + "','" + valueSAE10W40+ "','" + value46 +"','0','0')";
 
                         sqlLiteDatabase.database.execSQL(insertQuery);

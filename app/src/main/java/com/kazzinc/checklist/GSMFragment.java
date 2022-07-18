@@ -1,5 +1,7 @@
 package com.kazzinc.checklist;
 
+import static android.content.Context.MODE_MULTI_PROCESS;
+
 import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
@@ -36,6 +38,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class GSMFragment extends Fragment {
 
     private GSMViewModel mViewModel;
@@ -58,6 +63,12 @@ public class GSMFragment extends Fragment {
     EditText etBegin;
     EditText etEnd;
 
+    SimpleDateFormat df = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+    Date c;
+    String equipOut="";
+
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -78,16 +89,33 @@ public class GSMFragment extends Fragment {
             }
         });*/
 
+
+        sqlLiteDatabase.open(getContext());
+        String selectQuery = "SELECT TaskEquipName FROM Task WHERE length(TaskEquipName)>0 AND TaskEquipName IS NOT NULL";
+
+        Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                equipOut = cursor.getString(0);
+            }
+            while (cursor.moveToNext());
+        }
+        sqlLiteDatabase.close();
+
         tvControlDiff = getView().findViewById(R.id.tvControlDiff);
 
 
         etBegin = getView().findViewById(R.id.etBeginShift);
         etEnd = getView().findViewById(R.id.etEndShift);
 
+        c = new Date();
+
         ImageButton ib = (ImageButton) getView().findViewById(R.id.btnRefresh);
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //Toast.makeText(getContext(), "Синхронизация выполнена", Toast.LENGTH_SHORT).show();
                 Toast toast1 = Toast.makeText(getContext(),"Синхронизация выполнена", Toast.LENGTH_SHORT);
                 toast1.setGravity(Gravity.TOP, 0, 250);
@@ -95,14 +123,46 @@ public class GSMFragment extends Fragment {
             }
         });
 
+
+
+
         Button btnSave = (Button) getView().findViewById(R.id.btnSaveControlMeasure);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CheckControlDiff();
+
+                SimpleDateFormat nDF = new SimpleDateFormat("MM-dd-yyyy 00:00:00");
+                String newFormattedDate = nDF.format(c);
+
+                sqlLiteDatabase.open(getContext());
+
+                String insertQuery = "INSERT INTO GSM (DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, SendToServer, Confirmed, ReasonOil, T86, DT2) " +
+//                        "VALUES ('" + df.format(c) + "','" + newFormattedDate + "','" + GetUserShift() + "','" + equipOut + "','Контрольные показания','" + GetUserName() + "','Заправка','" + etBegin.getText() + "','" + 0 + "','" + 0 + "','" + 0 + "','" + 0 + "','0','0', '0',' ','" + 0 +  "')";
+                        "VALUES ('" + df.format(c) + "','" + newFormattedDate + "','" + GetUserShift() + "','" + equipOut + "','Контрольные показания','" + GetUserName() + "','Заправка','" + Double.parseDouble(etBegin.getText().toString()) + "','" + 0.0 + "','" + 0.0 + "','" + 0.0 + "','" + 0.0 + "','0','0', '1',' ','" + 0.0 +  "','" + Double.parseDouble(etEnd.getText().toString()) +  "')";
+                //String insertQuery = "INSERT INTO GSM (DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, SendToServer) VALUES ('" + df.format(c) +"','"  + GetUserDate() +  "','" + GetUserShift() + "','" + equipOut + "','" + equipIn +"','" + GetUserName()  + "','','" + valueDT + "','" + valueSAE15W40 + "','" + valueSAE50 + "','" + valueSAE10W40+ "','" + value46 +"','0','0')";
+
+                sqlLiteDatabase.database.execSQL(insertQuery);
+
+                sqlLiteDatabase.close();
+
+
+
                 Toast toast2 = Toast.makeText(getContext(),"Показания сохранены", Toast.LENGTH_SHORT);
                 toast2.setGravity(Gravity.CENTER, 0, 0);
                 toast2.show();
+            }
+
+            private int GetUserShift()
+            {
+                SharedPreferences sPref = getActivity().getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
+                return sPref.getInt("UserShift",0);
+            }
+
+            private String GetUserName()
+            {
+                SharedPreferences sPref = getActivity().getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
+                return sPref.getString("UserName","");
             }
         });
 
@@ -582,7 +642,7 @@ public class GSMFragment extends Fragment {
 
     private void saveNeedLoadParam(int needLoad)
     {
-        SharedPreferences preferences = this.getActivity().getSharedPreferences("CheckList", Context.MODE_MULTI_PROCESS);
+        SharedPreferences preferences = this.getActivity().getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
         SharedPreferences.Editor ed = preferences.edit();
         ed.putString("NeedLoad", String.valueOf(needLoad));
         ed.commit();
@@ -590,7 +650,7 @@ public class GSMFragment extends Fragment {
 
     private void loadUserInfo()
     {
-        sPref = getContext().getSharedPreferences("CheckList", Context.MODE_MULTI_PROCESS);
+        sPref = getContext().getSharedPreferences("CheckList", MODE_MULTI_PROCESS);
         UserDate = sPref.getString("UserDate","");
         UserShift = sPref.getInt("UserShift",0);
         GSM = sPref.getInt("GSM",0);

@@ -17,9 +17,11 @@ public class GSM {
     private int Deleted;
     private int SendToServer;
     private int Confirmed;
+    private float DT2;
 
 
-    public GSM(String DateEvent,String Date,String Shift,String EquipOut,String EquipIn,String EmplOut,String Reason,float DT,float SAE15W40,float SAE50,float SAE10W40,float T46,int Deleted,int SendToServer,int Confirmed) {
+
+    public GSM(String DateEvent,String Date,String Shift,String EquipOut,String EquipIn,String EmplOut,String Reason,float DT,float SAE15W40,float SAE50,float SAE10W40,float T46,int Deleted,int SendToServer,int Confirmed,float DT2) {
         this.DateEvent = DateEvent;
         this.Date = Date;
         this.Shift = Shift;
@@ -35,6 +37,7 @@ public class GSM {
         this.Deleted = Deleted;
         this.SendToServer = SendToServer;
         this.Confirmed = Confirmed;
+        this.DT2 = DT2;
     }
 
     public String getDateEvent() {
@@ -108,4 +111,12 @@ public class GSM {
 
     public int getConfirmed() { return Confirmed; }
     public void setConfirmed(int Confirmed) { this.Confirmed = Confirmed;}
+
+    public float getDT2() {
+        return DT2;
+    }
+
+    public void setDT2(float DT2) {
+        this.DT2 = DT2;
+    }
 }

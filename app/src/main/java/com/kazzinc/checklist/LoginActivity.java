@@ -117,6 +117,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private String formattedDate;
     private String newFormattedDate;
 
+
+
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -386,10 +388,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     List<TaskUser> taskUserList = msSqlDatabase.getTaskUserList();
                      sqlLiteDatabase.updateUserList(taskUserList);
 
-                    //обновляем список мастеров и начальников участков в локальной бд
+                    //обновляем список оборудования в локальной бд
                     List<Equipment> equipmentList = msSqlDatabase.getEquipment();
-
-                    Log.d("Alexey", "List<Equipment> : " + equipmentList);
                     sqlLiteDatabase.updateEquipment(equipmentList);
 
                     //обновляем список оснований для заправки в локальной бд
