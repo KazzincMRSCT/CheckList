@@ -479,7 +479,7 @@ public class GSMReffil extends AppCompatActivity {
                         String[] array = GetUserDate().split("\\.");
                         String dateShiftActual = array[2]+"-"+array[1]+"-"+array[0]+" 00:00:00";
 
-                        String insertQuery = "INSERT INTO GSM (DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, SendToServer, Confirmed, ReasonOil, T86) " +
+                        String insertQuery = "INSERT INTO GSM (DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, SendToServer, Confirmed, ReasonOil, T86,DT2) " +
                                 "VALUES ('" + df.format(c) + "','" + dateShiftActual + "','" + GetUserShift() + "','" + equipOut + "','" + equipIn + "','" + GetUserName() + "','" + reasonDT + "','" + valueDT + "','" + valueSAE15W40 + "','" + valueSAE50 + "','" + valueSAE10W40 + "','" + value46 + "','0','0', '0','" + reasonOil + "','" + value86 +  "','0.0')";
                         //String insertQuery = "INSERT INTO GSM (DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, SendToServer) VALUES ('" + df.format(c) +"','"  + GetUserDate() +  "','" + GetUserShift() + "','" + equipOut + "','" + equipIn +"','" + GetUserName()  + "','','" + valueDT + "','" + valueSAE15W40 + "','" + valueSAE50 + "','" + valueSAE10W40+ "','" + value46 +"','0','0')";
 

@@ -348,7 +348,7 @@ public class MsSqlDatabase {
         }
     }
 
-    public boolean UpdateGSM(String DateEvent, String Date, Integer Shift, String EquipOut, String EquipIn, String EmplOut, String Reason, double DT, double SAE15W40, double SAE50, double SAE10W40, double T46, int Deleted, String ReasonOil, int Confirmed, double T86) {
+    public boolean UpdateGSM(String DateEvent, String Date, Integer Shift, String EquipOut, String EquipIn, String EmplOut, String Reason, double DT, double SAE15W40, double SAE50, double SAE10W40, double T46, int Deleted, String ReasonOil, int Confirmed, double T86,double DT2) {
         Gson gson = new Gson();
         String resultJson ="";
         boolean result=false;
@@ -374,6 +374,7 @@ public class MsSqlDatabase {
             params.put("Deleted", Deleted);
             params.put("ReasonOil", ReasonOil);
             params.put("Confirmed", Confirmed);
+            params.put("DT2", DT2);
 
             Log.d("Alexey","GSM methodURL " + methodURL + " до "+ Date + " после " + Date.toString());
 

@@ -450,7 +450,7 @@ public class SyncService extends Service {
 
                     Log.d("Alexey", "GSM начало передачи");
 
-                    String selectQuery = "SELECT DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, IFNULL(ReasonOil,'') as ReasonOil, Confirmed, T86 FROM GSM WHERE SendToServer=0";
+                    String selectQuery = "SELECT DateEvent, Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, IFNULL(ReasonOil,'') as ReasonOil, Confirmed, T86, DT2 FROM GSM WHERE SendToServer=0";
                     Cursor cursor = sqlLiteDatabase.database.rawQuery(selectQuery, null);
                     Log.d("Alexey", "GSM Send -1");
 
@@ -473,12 +473,13 @@ public class SyncService extends Service {
                             int Deleted = Integer.parseInt(cursor.getString(12));
                             String ReasonOil = cursor.getString(13);
                             int Confirmed = Integer.parseInt(cursor.getString(14));
+                            double DT2 = Double.parseDouble(cursor.getString(16));
 
                             boolean result=false;
 
-                            Log.d("Alexey", "GSM result send " + DateEvent + ", " + Date + ", " + Shift+ ", " + EquipOut+ ", " + EquipIn+ ", " + EmplOut+ ", " + Reason+ ", " + DT+ ", " + SAE15W40+ ", " + SAE50+ ", " + SAE10W40+ ", " + T46+ ", " + Deleted + T46+ ", " + ReasonOil);
+                            Log.d("Alexey", "GSM result send " + DateEvent + ", " + Date + ", " + Shift+ ", " + EquipOut+ ", " + EquipIn+ ", " + EmplOut+ ", " + Reason+ ", " + DT+ ", " + SAE15W40+ ", " + SAE50+ ", " + SAE10W40+ ", " + T46+ ", " + Deleted + ", "+ T46+ ", " + ReasonOil+ ", "+DT2);
 
-                            result = msSqlDatabase.UpdateGSM(DateEvent,Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, ReasonOil, Confirmed, T86);
+                            result = msSqlDatabase.UpdateGSM(DateEvent,Date, Shift, EquipOut, EquipIn, EmplOut, Reason, DT, SAE15W40, SAE50, SAE10W40, T46, Deleted, ReasonOil, Confirmed, T86, DT2);
 
                             Log.d("Alexey", "GSM Send 9 " + result);
 

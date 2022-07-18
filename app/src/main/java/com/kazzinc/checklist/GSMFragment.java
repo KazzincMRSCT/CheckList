@@ -132,7 +132,7 @@ public class GSMFragment extends Fragment {
             public void onClick(View v) {
                 CheckControlDiff();
 
-                SimpleDateFormat nDF = new SimpleDateFormat("MM-dd-yyyy 00:00:00");
+                SimpleDateFormat nDF = new SimpleDateFormat("YYYY-MM-dd 00:00:00");
                 String newFormattedDate = nDF.format(c);
 
                 sqlLiteDatabase.open(getContext());
