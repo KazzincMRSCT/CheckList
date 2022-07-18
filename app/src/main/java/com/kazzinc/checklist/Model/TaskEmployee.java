@@ -9,10 +9,8 @@ public class TaskEmployee {
     private String TaskEmplAreaName;
     private String TaskEmplProffesion;
     private String TaskEmplRole;
-    private String EmplKeyExpiredDate;
-    private String EmplKeyDescription;
 
-    public TaskEmployee(int TaskEmplId, String TaskEmplName, String TaskEmplLogin, String TaskEmplPassword, Integer TaskEmplAreaId, String TaskEmplAreaName, String TaskEmplProffesion, String TaskEmplRole, String EmplKeyExpiredDate, String EmplKeyDescription ) {
+    public TaskEmployee(int TaskEmplId, String TaskEmplName, String TaskEmplLogin, String TaskEmplPassword, Integer TaskEmplAreaId, String TaskEmplAreaName, String TaskEmplProffesion, String TaskEmplRole) {
         this.TaskEmplId = TaskEmplId;
         this.TaskEmplName = TaskEmplName;
         this.TaskEmplLogin = TaskEmplLogin;
@@ -21,8 +19,6 @@ public class TaskEmployee {
         this.TaskEmplAreaName = TaskEmplAreaName;
         this.TaskEmplProffesion = TaskEmplProffesion;
         this.TaskEmplRole = TaskEmplRole;
-        this.EmplKeyExpiredDate = EmplKeyExpiredDate;
-        this.EmplKeyDescription = EmplKeyDescription;
     }
 
     public int getEmployeeId() {
@@ -89,19 +85,4 @@ public class TaskEmployee {
         this.TaskEmplRole = TaskEmplRole;
     }
 
-    public String getEmplKeyExpiredDate() {
-        return EmplKeyExpiredDate;
-    }
-
-    public void setEmplKeyExpiredDate(String emplKeyExpiredDate) {
-        EmplKeyExpiredDate = emplKeyExpiredDate;
-    }
-
-    public String getEmplKeyDescription() {
-        return EmplKeyDescription;
-    }
-
-    public void setEmplKeyDescription(String emplKeyDescription) {
-        EmplKeyDescription = emplKeyDescription;
-    }
 }

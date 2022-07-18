@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.kazzinc.checklist.Chat.ChatMain;
 import com.kazzinc.checklist.Model.Answer;
 import com.kazzinc.checklist.Model.ChatModel;
 import com.kazzinc.checklist.Model.EmlpECPKey;
@@ -35,7 +34,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class SqlLiteDatabase extends SQLiteOpenHelper {
@@ -482,10 +480,8 @@ public class SqlLiteDatabase extends SQLiteOpenHelper {
                 String taskEmplAreaName = cursor.getString(5);
                 String taskEmplProffesion = cursor.getString(6);
                 String taskEmplRole = cursor.getString(7);
-                String EmplKeyExpiredDate = cursor.getString(8);
-                String EmplKeyDescription = cursor.getString(9);
 
-                TaskEmployee employeeItem = new TaskEmployee(taskEmplId, taskEmplName, taskEmplLogin, taskEmplPassword, taskEmplAreaId, taskEmplAreaName, taskEmplProffesion, taskEmplRole, EmplKeyExpiredDate, EmplKeyDescription);
+                TaskEmployee employeeItem = new TaskEmployee(taskEmplId, taskEmplName, taskEmplLogin, taskEmplPassword, taskEmplAreaId, taskEmplAreaName, taskEmplProffesion, taskEmplRole);
                 employees.add(employeeItem);
             } while (cursor.moveToNext());
         }

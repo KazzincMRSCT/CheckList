@@ -15,7 +15,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -57,7 +56,7 @@ public class TaskFragment extends Fragment {
     private SqlLiteDatabase sqlLiteDatabase = new SqlLiteDatabase(getActivity());
 
     String UserId;
-    String IsLongShift;
+//    String IsLongShift;
     private String UserRole;
     SharedPreferences sPref;
     Handler timerHandler = new Handler();
@@ -923,7 +922,7 @@ public class TaskFragment extends Fragment {
         UserId = sPref.getString("UserId","");
         String userName = sPref.getString("UserName","");
         UserRole = sPref.getString("UserRole","");
-        IsLongShift = sPref.getString("GSMLongShift","0");
+//        IsLongShift = sPref.getString("GSMLongShift","0");
     }
 
     public static void expand(final TextView v, int duration, int targetHeight) {
